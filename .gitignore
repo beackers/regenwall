@@ -5,4 +5,5 @@ build.sh
 /app/build/*
 *.apk
 /build/*
-/.gradle/*
+/.gradle*/*
+/gradle*/*
