@@ -32,6 +32,11 @@ jobs:
           "platforms;android-34" \
           "build-tools;34.0.0"
 
+      - name: Verify SDK install
+        run: |
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          ls $ANDROID_HOME/platforms
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
