@@ -22,6 +22,16 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x gradlew
 
+      - name: Set Up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Packages
+        run: |
+          sdkmanager \
+          "platform-tools" \
+          "platforms;android-34" \
+          "build-tools;34.0.0"
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
