@@ -32,6 +32,9 @@ jobs:
           "platforms;android-34" \
           "build-tools;34.0.0"
 
+      - name: Debug Dependencies
+        run: ./gradlew :app:dependencies --configuration debugCompileClasspath
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
