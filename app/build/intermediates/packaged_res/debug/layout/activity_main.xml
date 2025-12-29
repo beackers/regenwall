@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Generate Wallpaper" />
+    <SeekBar
+        android:id="@+id/particleCountSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10000" />
+    <SeekBar
+        android:id="@+id/speedSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="500" />
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop" />
+</LinearLayout>
