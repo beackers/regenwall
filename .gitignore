@@ -2,3 +2,6 @@ build.sh
 *.txt
 *.idsig
 *.keystore
+/build/*
+*.apk
+!regenwall.apk
