@@ -25,6 +25,9 @@ jobs:
       - name: Set Up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: double-check roots
+        run: ./gradlew :app:compileDebugJavaWithJavac --info
+
       - name: Install Packages
         run: |
           sdkmanager \
