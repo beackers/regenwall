@@ -41,3 +41,7 @@ jobs:
       - name: Debug dependencies list
         run: |
           ./gradlew :app:dependencies --configuration debugRuntimeClasspath
+
+      - name: Verify Gradle Tasks
+        run: |
+          ./gradlew :app:tasks | grep compile
