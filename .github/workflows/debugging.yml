@@ -37,3 +37,7 @@ jobs:
           echo "ANDROID_HOME: $ANDROID_HOME"
           ls $ANDROID_HOME/platforms
           ls $ANDROID_HOME/platforms/android-34/android.jar
+
+      - name: Debug dependencies list
+        run: |
+          ./gradlew :app:dependencies --configuration debugRuntimeClasspath
