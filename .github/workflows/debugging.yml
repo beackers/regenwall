@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  debug:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,4 +36,4 @@ jobs:
         run: |
           echo "ANDROID_HOME: $ANDROID_HOME"
           ls $ANDROID_HOME/platforms
-          ls $ANDROID_HOME/platforms/android-34/android.jar 
+          ls $ANDROID_HOME/platforms/android-34/android.jar
