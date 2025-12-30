@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageView preview;
     private SeekBar speedSeek;
     private SeekBar particleCountSeek;
+    private TextView particleCountLabel;
+    private TextView speedLabel;
+    private TextView generatorLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,26 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek = findViewById(R.id.particleCountSeek);
         Button generate = findViewById(R.id.generateButton);
         generate.setOnClickListener(v -> generateArt());
+        particleCountLabel = findViewById(R.id.particleCountSeek);
+        speedLabel = findViewById(R.id.speedLabel);
+        particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
+                particleCountLabel.setText("Particle count: " + progress);
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekbar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekbar) {}
+        });
+        speedSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
+                speedLabel.setText("Particle count: " + progress);
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekbar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekbar) {}
+        });
+
+        generatorLabel = findViewById(R.id.generatorLabel);
     }
 
     private void generateArt() {
