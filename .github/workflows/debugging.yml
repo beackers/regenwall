@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Debug Building Process
 
 on:
   push:
@@ -32,11 +32,8 @@ jobs:
           "platforms;android-34" \
           "build-tools;34.0.0"
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: regenwall-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Verify SDK install
+        run: |
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          ls $ANDROID_HOME/platforms
+          ls $ANDROID_HOME/platforms/android-34/android.jar 
