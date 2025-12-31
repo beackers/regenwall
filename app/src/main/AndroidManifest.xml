@@ -5,8 +5,7 @@
         android:name=".RegenwallApp"
         android:allowBackup="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:usesCleartextTraffic="false"
-        android:debuggable="false">
+        android:usesCleartextTraffic="false">
             <activity android:name=".MainActivity" android:exported="true">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN"/>
