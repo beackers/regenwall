@@ -38,6 +38,9 @@ jobs:
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
 
+      - name: LintMyJava
+        run: ./gradlew lint
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
         env:

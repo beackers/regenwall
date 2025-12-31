@@ -18,7 +18,7 @@ public class RegenwallApp extends Application {
                     .detectAll()
                     .penaltyLog()
                     .build());
-            Log.d("Regenwall", "Debug mode ON")
+            Log.d("Regenwall", "Debug mode ON");
         }
     }
 }
