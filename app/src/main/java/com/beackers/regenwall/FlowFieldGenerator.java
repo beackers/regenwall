@@ -3,6 +3,7 @@ package com.beackers.regenwall;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Color;
 
 import java.util.Random;
 
@@ -21,10 +22,14 @@ public class FlowFieldGenerator implements ArtGenerator {
         Random rng = new Random(config.seed);
 
         float[][] angles = new float[cols][rows];
+        int[][] colors = new int[cols][rows];
+
         for (int x = 0; x < cols; x++) {
             for (int y = 0; y < rows; y++) {
                 angles[x][y] = 
                     rng.nextFloat() * (float)(Math.PI * 2 * config.angleRange);
+                colors[x][y] =
+                    config.palette[rng.nextInt(config.palette.length)];
             }
         }
         Paint paint = new Paint();
@@ -48,7 +53,7 @@ public class FlowFieldGenerator implements ArtGenerator {
                 float dy = (float)Math.sin(angle) * config.speed;
 
                 paint.setColor(
-                    config.palette[rng.nextInt(config.palette.length)]
+                        colors[cx][cy]
                 );
                 
                 canvas.drawLine(p.x, p.y, p.x + dx, p.y + dy, paint);
