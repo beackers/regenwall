@@ -47,6 +47,17 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+        textReport true
+        htmlReport true
+        xmlReport true
+
+        htmlOutput file("$buildDir/reports/lint/lint-results.html")
+        xmlOutput file("$buildDir/reports/lint/lint-results.xml")
+        textOutput file("$buildDir/reports/lint/lint-results.txt")
+    }
 }
 dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"

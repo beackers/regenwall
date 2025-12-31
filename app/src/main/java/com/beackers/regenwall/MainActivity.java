@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView particleCountLabel;
     private TextView speedLabel;
     private TextView generatorLabel;
+    // This will be replaced later by something that pulls in different values.
+    private String generatorType = "FlowField";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek = findViewById(R.id.particleCountSeek);
         Button generate = findViewById(R.id.generateButton);
         generate.setOnClickListener(v -> generateArt());
-        particleCountLabel = findViewById(R.id.particleCountSeek);
+        particleCountLabel = findViewById(R.id.particleCountLabel);
         speedLabel = findViewById(R.id.speedLabel);
         particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -57,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
-        ArtGenerator generator = new FlowFieldGenerator();
+        if (generatorType == "FlowField") {
+            ArtGenerator generator = new FlowFieldGenerator();
+        }
         Bitmap bitmap = generator.generate(width, height, config);
 
         preview.setImageBitmap(bitmap);
