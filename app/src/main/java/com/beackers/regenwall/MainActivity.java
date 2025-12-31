@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         config.seed = System.currentTimeMillis();
         if (generatorType == "FlowField") {
             ArtGenerator generator = new FlowFieldGenerator();
+            Bitmap bitmap = generator.generate(width, height, config);
         }
-        Bitmap bitmap = generator.generate(width, height, config);
 
         preview.setImageBitmap(bitmap);
     }

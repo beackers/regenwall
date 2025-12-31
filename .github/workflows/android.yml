@@ -39,8 +39,13 @@ jobs:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
 
       - name: LintMyJava
-        run: ./gradlew lint
+        run: ./gradlew lintDebug --continue
         continue-on-error: true
+
+      - name: Find Lint Reports
+        run: |
+          echo "==== build/reports ===="
+          find app/build/reports/lint -type f || true
 
       - name: Upload Lint Reports
         uses: actions/upload-artifact@v4
