@@ -1,6 +1,12 @@
 package com.beackers.regenwall;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import java.util.concurrent.ExecuterService;
+import java.util.concurrent.Executors;
+
 import android.graphics.Bitmap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +16,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
+    // text + settings
+    private Button generateButton;
     private ImageView preview;
     private SeekBar speedSeek;
     private SeekBar particleCountSeek;
@@ -19,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     // This will be replaced later by something that pulls in different values.
     private String generatorType = "FlowField";
 
+    // Thread handling
+    private final ExecutorService executor = new Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         preview = findViewById(R.id.preview);
         speedSeek = findViewById(R.id.speedSeek);
         particleCountSeek = findViewById(R.id.particleCountSeek);
-        Button generate = findViewById(R.id.generateButton);
-        generate.setOnClickListener(v -> generateArt());
+        generateButton = findViewById(R.id.generateButton);
+        generateButton.setOnClickListener(v -> generateArt());
         particleCountLabel = findViewById(R.id.particleCountLabel);
         speedLabel = findViewById(R.id.speedLabel);
         particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -52,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void generateArt() {
+        generateButton.setEnabled(false);
+        generateButton.setText("working...");
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
@@ -59,10 +73,17 @@ public class MainActivity extends AppCompatActivity {
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
+
         if (generatorType == "FlowField") {
-            ArtGenerator generator = new FlowFieldGenerator();
-            Bitmap bitmap = generator.generate(width, height, config);
-            preview.setImageBitmap(bitmap);
+            executor.execute(() -> {
+                ArtGenerator generator = new FlowFieldGenerator();
+                Bitmap bitmap = generator.generate(width, height, config);
+                mainHandler.post(() -> {
+                    preview.setImageBitmap(bitmap);
+                    generateButton.setEnabled(true);
+                });
+            });
         }
+        generateButton.setText("generate wallpaper");
     }
 }
