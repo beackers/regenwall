@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import java.util.concurrent.ExecuterService;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import android.graphics.Bitmap;
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private String generatorType = "FlowField";
 
     // Thread handling
-    private final ExecutorService executor = new Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
