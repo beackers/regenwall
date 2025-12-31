@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if (generatorType == "FlowField") {
             ArtGenerator generator = new FlowFieldGenerator();
             Bitmap bitmap = generator.generate(width, height, config);
+            preview.setImageBitmap(bitmap);
         }
-
-        preview.setImageBitmap(bitmap);
     }
 }

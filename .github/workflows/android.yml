@@ -37,8 +37,11 @@ jobs:
           echo "$KEYSTORE_B64" | base64 --decode > regenwall.keystore
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+      - name: Lint Everything But Java
+        run: ./gradlew lintDebug -x compileDebugJavaWithJavac
+        continue-on-error: true
 
-      - name: LintMyJava
+      - name: Lint (Java Edition)
         run: ./gradlew lintDebug --continue
         continue-on-error: true
 
@@ -54,7 +57,7 @@ jobs:
           name: lint-report
           path: app/build/reports/lint/
 
-      - name: Enforce Lint Result
+      - name: Enforce Lint Results
         run: ./gradlew lint
 
       - name: Build debug APK
