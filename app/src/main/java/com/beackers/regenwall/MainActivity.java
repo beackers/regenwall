@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         speedSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-                speedLabel.setText("Particle count: " + progress);
+                speedLabel.setText("Particle speed: " + progress);
             }
             @Override public void onStartTrackingTouch(SeekBar seekbar) {}
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
