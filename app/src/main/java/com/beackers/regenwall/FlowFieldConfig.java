@@ -2,7 +2,7 @@ package com.beackers.regenwall;
 
 import android.graphics.Color;
 
-public class ArtConfig {
+public class FlowFieldConfig {
     public long seed;
     public int particleCount;
     public int steps;
@@ -14,7 +14,7 @@ public class ArtConfig {
     public int backgroundColor;
     public int[] palette;
 
-    public static ArtConfig defaultConfig() {
+    public static FlowFieldConfig defaultConfig() {
         ArtConfig c = new ArtConfig();
         c.seed = System.currentTimeMillis();
         c.particleCount = 5000;

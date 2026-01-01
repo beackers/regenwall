@@ -69,17 +69,18 @@ public class MainActivity extends AppCompatActivity {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
 
-        ArtConfig config = ArtConfig.defaultConfig();
-        config.particleCount = Math.max(500, particleCountSeek.getProgress());
-        config.speed = speedSeek.getProgress() / 100f;
-        config.seed = System.currentTimeMillis();
-
         if (generatorType == "FlowField") {
+            FlowFieldConfig config = FlowFieldConfig.defaultConfig();
+            config.particleCount = Math.max(500, particleCountSeek.getProgress());
+            config.speed = speedSeek.getProgress() / 100f;
+            config.seed = System.currentTimeMillis();
+
             executor.execute(() -> {
                 ArtGenerator generator = new FlowFieldGenerator();
                 Bitmap bitmap = generator.generate(width, height, config);
                 mainHandler.post(() -> {
                     preview.setImageBitmap(bitmap);
+                    SaveImage.SaveToPictures(bitmap);
                     generateButton.setEnabled(true);
                 });
             });
