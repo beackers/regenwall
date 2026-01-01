@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class FlowFieldGenerator implements ArtGenerator {
     @Override
-    public Bitmap generate(int width, int height, ArtConfig config) {
+    public Bitmap generate(int width, int height, FlowFieldConfig config) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 

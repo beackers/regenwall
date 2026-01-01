@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView generatorLabel;
     // This will be replaced later by something that pulls in different values.
     private String generatorType = "FlowField";
+    private ArtGenerator generator;
 
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -65,18 +66,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void generateArt() {
         generateButton.setEnabled(false);
-        generateButton.setText("working...");
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
+        Configurable config;
 
         if (generatorType == "FlowField") {
-            FlowFieldConfig config = FlowFieldConfig.defaultConfig();
+            config = FlowFieldConfig();
+            config.defaultConfig();
             config.particleCount = Math.max(500, particleCountSeek.getProgress());
             config.speed = speedSeek.getProgress() / 100f;
             config.seed = System.currentTimeMillis();
 
             executor.execute(() -> {
-                ArtGenerator generator = new FlowFieldGenerator();
+                generator = new FlowFieldGenerator();
                 Bitmap bitmap = generator.generate(width, height, config);
                 mainHandler.post(() -> {
                     preview.setImageBitmap(bitmap);
@@ -85,6 +87,5 @@ public class MainActivity extends AppCompatActivity {
                 });
             });
         }
-        generateButton.setText("generate wallpaper");
     }
 }
