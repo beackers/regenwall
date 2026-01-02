@@ -25,7 +25,15 @@ public class MainActivity extends AppCompatActivity {
     // This will be replaced later by something that pulls in different values.
     // By the way: don't polymorph generator or config up here. javac gets mad.
     private String generatorType;
+
+    // List of generator buttons
     private Button flowFieldButton;
+
+    // List of vars needed for generators
+    private ImageView preview;
+    private Button generateButton;
+    private SeekBar speedSeek;
+    private SeekBar particleCountSeek;
 
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -47,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.flow_field);
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
-        ImageView preview = findViewById(R.id.preview);
-        SeekBar speedSeek = findViewById(R.id.speedSeek);
-        SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
-        Button generateButton = findViewById(R.id.generateButton);
-        generateButton.setOnClickListener(v -> generateArt());
+        preview = findViewById(R.id.preview);
+        speedSeek = findViewById(R.id.speedSeek);
+        particleCountSeek = findViewById(R.id.particleCountSeek);
+        generateButton = findViewById(R.id.generateButton);
+        generateButton.setOnClickListener(v -> flowFieldGenerate());
         TextView particleCountLabel = findViewById(R.id.particleCountLabel);
         TextView speedLabel = findViewById(R.id.speedLabel);
         particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
