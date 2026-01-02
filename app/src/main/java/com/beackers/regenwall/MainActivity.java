@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openFlowFieldView() {
         setContentView(R.layout.flow_field);
+        generatorType = "FlowField";
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
         preview = findViewById(R.id.preview);
@@ -95,10 +96,20 @@ public class MainActivity extends AppCompatActivity {
         executor.execute(() -> {
             Bitmap bitmap = generator.generate(width, height, config);
             mainHandler.post(() -> {
-                preview.setImageBitmap(bitmap);
-                SaveImage.SaveToPictures(this, bitmap);
                 generateButton.setEnabled(true);
+                showImage(bitmap);
             });
         });
+    }
+
+    private showImage(Bitmap image) {
+        setContentView(R.layout.view_image);
+        Button dontSave = findViewById(R.id.dontSaveImage);
+        Button doSave = findViewById(R.id.doSaveImage);
+        preview.setImageBitmap(image);
+        if (generatorType == "FlowField") {
+            dontSave.setOnClickListener(v -> openFlowFieldView());
+            doSave.setOnClickListener(v -> SaveImage.saveToPictures(this, image));
+        }
     }
 }

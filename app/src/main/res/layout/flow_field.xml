@@ -46,12 +46,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="500" />
-    <ImageView
-        android:id="@+id/preview"
-        android:layout_width="match_parent"
-        android:adjustViewBounds="true"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scaleType="fitCenter"
-        android:contentDescription="Generated image" />
 </LinearLayout>
