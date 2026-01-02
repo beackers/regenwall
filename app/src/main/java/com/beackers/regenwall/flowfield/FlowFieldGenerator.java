@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Color;
 
 import java.util.Random;
+import com.beackers.regenwall.ArtGenerator;
 
 public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
     @Override

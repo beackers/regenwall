@@ -1,6 +1,7 @@
 package com.beackers.regenwall.flowfield;
 
 import android.graphics.Color;
+import com.beackers.regenwall.ArtConfig;
 
 public class FlowFieldConfig extends ArtConfig {
     public long seed;

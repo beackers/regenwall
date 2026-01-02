@@ -1,6 +1,6 @@
 package com.beackers.regenwall.flowfield;
 
-import java.utils.Random;
+import java.util.Random;
 
 public class PerlinNoise {
     private final int[] p = new int[512];
