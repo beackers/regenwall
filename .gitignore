@@ -8,5 +8,4 @@ build.sh
 /.gradle*/*
 /gradle*/*
 *.b64
-/java/*
-java
+/java
