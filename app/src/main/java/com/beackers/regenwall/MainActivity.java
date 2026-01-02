@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         preview.setImageBitmap(image);
         if (generatorType == "FlowField") {
             dontSave.setOnClickListener(v -> openFlowFieldView());
-            doSave.setOnClickListener(v -> SaveImage.saveToPictures(this, image));
+            doSave.setOnClickListener(v -> SaveImage.SaveToPictures(this, image));
         }
     }
 }

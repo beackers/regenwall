@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 public class SaveImage {
-    static void SaveToPictures(Context context, Bitmap bitmap) {
+    public static void SaveToPictures(Context context, Bitmap bitmap) {
         String filename = "regenwall-" + System.currentTimeMillis() + ".png";
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
