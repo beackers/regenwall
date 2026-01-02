@@ -15,6 +15,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// my own stuff
+import com.beackers.regenwall.flowfield.FlowFieldGenerator;
+import com.beackers.regenwall.flowfield.FlowFieldConfig;
+
 public class MainActivity extends AppCompatActivity {
     // text + settings
     private Button generateButton;
@@ -24,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView particleCountLabel;
     private TextView speedLabel;
     private TextView generatorLabel;
+
     // This will be replaced later by something that pulls in different values.
+    // By the way: don't polymorph generator or config up here. javac gets mad.
     private String generatorType = "FlowField";
 
     // Thread handling
