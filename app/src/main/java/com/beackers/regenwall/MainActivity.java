@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private Button flowFieldButton;
 
     // List of vars needed for generators
-    private ImageView preview;
     private Button generateButton;
     private SeekBar speedSeek;
     private SeekBar particleCountSeek;
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         generatorType = "FlowField";
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
-        preview = findViewById(R.id.preview);
         speedSeek = findViewById(R.id.speedSeek);
         particleCountSeek = findViewById(R.id.particleCountSeek);
         generateButton = findViewById(R.id.generateButton);
@@ -104,10 +102,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void showImage(Bitmap image) {
         setContentView(R.layout.view_image);
+
+        ImageView preview = findViewById(R.id.preview);
         Button dontSave = findViewById(R.id.dontSaveImage);
         Button doSave = findViewById(R.id.doSaveImage);
         preview.setImageBitmap(image);
-        if (generatorType == "FlowField") {
+
+        if ("FlowField".equals(generatorType)) {
             dontSave.setOnClickListener(v -> openFlowFieldView());
             doSave.setOnClickListener(v -> SaveImage.SaveToPictures(this, image));
         }
