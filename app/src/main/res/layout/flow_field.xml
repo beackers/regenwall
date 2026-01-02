@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="back to generators list" />
+
+    <TextView
+        android:id="@+id/generatorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Using Particle Generator"
+        android:textSize="14sp"
+        android:paddingTop="8dp" />
+    <Button
+        android:id="@+id/generateButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Generate Wallpaper" />
+    <TextView
+        android:id="@+id/particleCountLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Particle Count"
+        android:textSize="14sp"
+        android:paddingTop="8dp" />
+    <SeekBar
+        android:id="@+id/particleCountSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10000" />
+    <TextView
+        android:id="@+id/speedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Particle Speed"
+        android:textSize="14sp"
+        android:paddingTop="8dp" />
+    <SeekBar
+        android:id="@+id/speedSeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="500" />
+    <ImageView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:contentDescription="Generated image" />
+</LinearLayout>

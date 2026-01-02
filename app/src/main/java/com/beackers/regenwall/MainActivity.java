@@ -21,17 +21,11 @@ import com.beackers.regenwall.flowfield.FlowFieldConfig;
 
 public class MainActivity extends AppCompatActivity {
     // text + settings
-    private Button generateButton;
-    private ImageView preview;
-    private SeekBar speedSeek;
-    private SeekBar particleCountSeek;
-    private TextView particleCountLabel;
-    private TextView speedLabel;
-    private TextView generatorLabel;
 
     // This will be replaced later by something that pulls in different values.
     // By the way: don't polymorph generator or config up here. javac gets mad.
-    private String generatorType = "FlowField";
+    private String generatorType;
+    private Button flowFieldButton;
 
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -40,15 +34,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        openMainView();
+    }
+
+    private void openMainView() {
         setContentView(R.layout.activity_main);
-        
-        preview = findViewById(R.id.preview);
-        speedSeek = findViewById(R.id.speedSeek);
-        particleCountSeek = findViewById(R.id.particleCountSeek);
-        generateButton = findViewById(R.id.generateButton);
+        flowFieldButton = findViewById(R.id.flowFieldButton);
+        flowFieldButton.setOnClickListener(v -> openFlowFieldView());
+    }
+
+    private void openFlowFieldView() {
+        setContentView(R.layout.flow_field);
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> openMainView());
+        ImageView preview = findViewById(R.id.preview);
+        SeekBar speedSeek = findViewById(R.id.speedSeek);
+        SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
+        Button generateButton = findViewById(R.id.generateButton);
         generateButton.setOnClickListener(v -> generateArt());
-        particleCountLabel = findViewById(R.id.particleCountLabel);
-        speedLabel = findViewById(R.id.speedLabel);
+        TextView particleCountLabel = findViewById(R.id.particleCountLabel);
+        TextView speedLabel = findViewById(R.id.speedLabel);
         particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
@@ -65,31 +70,27 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onStartTrackingTouch(SeekBar seekbar) {}
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
         });
-
-        generatorLabel = findViewById(R.id.generatorLabel);
+        TextView generatorLabel = findViewById(R.id.generatorLabel);    
     }
 
-    private void generateArt() {
+    private void flowFieldGenerate() {
         generateButton.setEnabled(false);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
+        FlowFieldGenerator generator = new FlowFieldGenerator();
+        FlowFieldConfig config = new FlowFieldConfig();
+        config.defaultConfig();
+        config.particleCount = Math.max(500, particleCountSeek.getProgress());
+        config.speed = speedSeek.getProgress() / 100f;
+        config.seed = System.currentTimeMillis();
 
-        if (generatorType == "FlowField") {
-            FlowFieldGenerator generator = new FlowFieldGenerator();
-            FlowFieldConfig config = new FlowFieldConfig();
-            config.defaultConfig();
-            config.particleCount = Math.max(500, particleCountSeek.getProgress());
-            config.speed = speedSeek.getProgress() / 100f;
-            config.seed = System.currentTimeMillis();
-
-            executor.execute(() -> {
-                Bitmap bitmap = generator.generate(width, height, config);
-                mainHandler.post(() -> {
-                    preview.setImageBitmap(bitmap);
-                    SaveImage.SaveToPictures(this, bitmap);
-                    generateButton.setEnabled(true);
-                });
+        executor.execute(() -> {
+            Bitmap bitmap = generator.generate(width, height, config);
+            mainHandler.post(() -> {
+                preview.setImageBitmap(bitmap);
+                SaveImage.SaveToPictures(this, bitmap);
+                generateButton.setEnabled(true);
             });
-        }
+        });
     }
 }
