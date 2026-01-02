@@ -7,7 +7,7 @@ import android.graphics.Color;
 
 import java.util.Random;
 
-public class FlowFieldGenerator implements ArtGenerator {
+public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
     @Override
     public Bitmap generate(int width, int height, FlowFieldConfig config) {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);

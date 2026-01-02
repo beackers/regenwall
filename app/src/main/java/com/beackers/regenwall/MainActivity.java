@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView generatorLabel;
     // This will be replaced later by something that pulls in different values.
     private String generatorType = "FlowField";
-    private ArtGenerator generator;
+    private ArtGenerator<? extends ArtConfig> generator;
+    private ArtConfig config;
 
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -68,21 +69,20 @@ public class MainActivity extends AppCompatActivity {
         generateButton.setEnabled(false);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
-        Configurable config;
 
         if (generatorType == "FlowField") {
-            config = FlowFieldConfig();
+            generator = new FlowFieldGenerator();
+            config = new FlowFieldConfig();
             config.defaultConfig();
             config.particleCount = Math.max(500, particleCountSeek.getProgress());
             config.speed = speedSeek.getProgress() / 100f;
             config.seed = System.currentTimeMillis();
 
             executor.execute(() -> {
-                generator = new FlowFieldGenerator();
                 Bitmap bitmap = generator.generate(width, height, config);
                 mainHandler.post(() -> {
                     preview.setImageBitmap(bitmap);
-                    SaveImage.SaveToPictures(bitmap);
+                    SaveImage.SaveToPictures(this, bitmap);
                     generateButton.setEnabled(true);
                 });
             });

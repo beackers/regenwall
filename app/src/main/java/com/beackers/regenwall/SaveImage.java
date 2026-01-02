@@ -23,7 +23,7 @@ public class SaveImage {
             .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         if (uri == null) {
-            throw new RunTimeException("Failed to create MediaStore entry");
+            throw new RuntimeException("Failed to create MediaStore entry");
         }
 
         try (OutputStream out = context.getContentResolver().openOutputStream(uri)) {

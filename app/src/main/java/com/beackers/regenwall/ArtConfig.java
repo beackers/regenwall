@@ -2,5 +2,5 @@ package com.beackers.regenwall;
 
 public abstract class ArtConfig implements Configurable {
     @Override
-    abstract void defaultConfig();
+    public abstract void defaultConfig();
 }
