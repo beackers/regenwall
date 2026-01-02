@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private showImage(Bitmap image) {
+    private void showImage(Bitmap image) {
         setContentView(R.layout.view_image);
         Button dontSave = findViewById(R.id.dontSaveImage);
         Button doSave = findViewById(R.id.doSaveImage);
