@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
 
         if ("FlowField".equals(generatorType)) {
             dontSave.setOnClickListener(v -> openFlowFieldView());
-            doSave.setOnClickListener(v -> SaveImage.SaveToPictures(this, image));
+            doSave.setOnClickListener(v -> {
+                SaveImage.SaveToPictures(this, image);
+                openFlowFieldView();
+            });
         }
     }
 }
