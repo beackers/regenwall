@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     private void openFlowFieldView() {
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
-        ProgressBar progressBar = findViewById(R.id.progressBar);
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
         speedSeek = findViewById(R.id.speedSeek);
@@ -85,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void flowFieldGenerate() {
         generateButton.setEnabled(false);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
 
