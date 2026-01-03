@@ -59,12 +59,12 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
 
                 // color logic
                 // could add a colorDrift variable to control color noise scale seperate from noiseScale
-                Color.colorToHSV(base, hsv);
                 float colorNoise = noise.noise(
                         p.x * .3f * noiseScale,
                         p.y * .3f * noiseScale
                         );
                 float hue = (colorNoise * 360f + 360f) % 360f;
+                Color.colorToHSV(hue, hsv);
                 float valueNoise = noise.noise(
                         p.x * noiseScale * .25f,
                         p.y * noiseScale * .25f
