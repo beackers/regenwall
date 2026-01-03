@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.ProgressBar;
+import android.widget.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void openFlowFieldView() {
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
         speedSeek = findViewById(R.id.speedSeek);
@@ -82,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void flowFieldGenerate() {
         generateButton.setEnabled(false);
+        progressBar.setProgress(0);
+        progressBar.setVisibility(View.VISIBLE);
+
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
@@ -92,9 +98,17 @@ public class MainActivity extends AppCompatActivity {
         config.seed = System.currentTimeMillis();
 
         executor.execute(() -> {
-            Bitmap bitmap = generator.generate(width, height, config);
+            Bitmap bitmap = generator.generate(
+                    width,
+                    height,
+                    config,
+                    progress -> mainHandler.post(() ->
+                        progressBar.setProgress((int)(progress * 100))
+                    )
+                    );
             mainHandler.post(() -> {
                 generateButton.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
                 showImage(bitmap);
             });
         });

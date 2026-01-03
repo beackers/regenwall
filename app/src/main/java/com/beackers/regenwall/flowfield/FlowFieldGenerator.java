@@ -10,7 +10,11 @@ import com.beackers.regenwall.ArtGenerator;
 
 public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
     @Override
-    public Bitmap generate(int width, int height, FlowFieldConfig config) {
+    public Bitmap generate(
+            int width,
+            int height,
+            FlowFieldConfig config,
+            ProgressListener progress) {
         PerlinNoise noise = new PerlinNoise(config.seed);
         float noiseScale = config.noiseScale;
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -62,6 +66,10 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
                 canvas.drawLine(p.x, p.y, p.x + dx, p.y + dy, paint);
                 p.x += dx;
                 p.y += dy;
+            }
+            // progress reporting
+            if (progress != null && step % 5 == 0) {
+                progress.onProgress((step + 1f) / config.steps);
             }
         }
 
