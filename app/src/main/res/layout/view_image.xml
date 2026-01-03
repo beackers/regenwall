@@ -14,7 +14,7 @@
         android:contentDescription="Generated image"
 
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="buttonRow"
+        app:layout_constraintBottom_toTopOf="@id/buttonRow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
     <LinearLayout
