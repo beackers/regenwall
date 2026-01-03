@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-import android.widget.View;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
