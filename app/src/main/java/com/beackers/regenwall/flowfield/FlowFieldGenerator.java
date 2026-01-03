@@ -64,7 +64,6 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
                         p.y * .3f * noiseScale
                         );
                 float hue = (colorNoise * 360f + 360f) % 360f;
-                Color.colorToHSV(hue, hsv);
                 float valueNoise = noise.noise(
                         p.x * noiseScale * .25f,
                         p.y * noiseScale * .25f
