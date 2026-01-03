@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Color;
 
 import java.util.Random;
+import java.util.Arrays;
 import com.beackers.regenwall.ArtGenerator;
 
 public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
@@ -40,10 +41,11 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
         final float brightnessScale = 1f / TWO_PI;
         float hsv[] = new float[3];
         for (int step = 0; step < config.steps; step++) {
-            for (Particle p : particles) {
+            Arrays.stream(particles).forEach(p -> {
+                // movement logic
                 if (p.x < 0 || p.y < 0 || p.x >= width || p.y >= height) {
                     p.reset(rng, width, height);
-                    continue;
+                    return;
                 }
                 float n = noise.noise(
                         p.x * noiseScale,
@@ -53,20 +55,31 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
                 float dx = (float)Math.cos(angle) * config.speed;
                 float dy = (float)Math.sin(angle) * config.speed;
 
-                int base = config.palette[
-                    Math.abs((int)(angle * 1000)) % config.palette.length
-                ];
-                Color.colorToHSV(base, hsv);
-                hsv[2] = 0.4f + 0.6f * angle * brightnessScale;
 
+                // color logic
+                // could add a colorDrift variable to control color noise scale seperate from noiseScale
+                Color.colorToHSV(base, hsv);
+                float colorNoise = noise.noise(
+                        p.x * .3f * noiseScale,
+                        p.y * .3f * noiseScale
+                        );
+                float hue = (colorNoise * 360f + 360f) % 360f;
+                float valueNoise = noise.noise(
+                        p.x * noiseScale * .25f,
+                        p.y * noiseScale * .25f
+                        );
+                hsv[0] = hue;
+                hsv[1] = .75f;
+                hsv[2] = .5f + .5f * Math.round(valueNoise * 3f) / 3f;
                 paint.setColor(
                         Color.HSVToColor(hsv)
                 );
-                
+
+                // drawing
                 canvas.drawLine(p.x, p.y, p.x + dx, p.y + dy, paint);
                 p.x += dx;
                 p.y += dy;
-            }
+            });
             // progress reporting
             if (progress != null && step % 5 == 0) {
                 progress.onProgress((step + 1f) / config.steps);
@@ -76,3 +89,4 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
         return bitmap;
     }
 }
+
