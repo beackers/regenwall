@@ -3,11 +3,12 @@ package com.beackers.regenwall.datastore;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import androidx.datastore.core.CorruptionException;
 import androidx.datastore.core.DataStore;
 import androidx.datastore.core.Serializer;
-import androidx.datastore.dataStore;
 
 import android.graphics.Color;
 
@@ -21,16 +22,16 @@ public class FlowFieldConfigSerializer implements Serializer<FlowFieldConfigProt
             .setSteps(300)
             .setSpeed(1f)
             .setAngleRange(1.5f)
-            .setAlpha(1.0f)
+            .setAlpha(20)
             .setStrokeWidth(1f)
             .setBackgroundColor(Color.BLACK)
             .setNoiseScale(.01f)
             .addAllPalette(
-                    Arrays.stream([
+                    Arrays.stream(new int[] {
                         Color.MAGENTA,
                         Color.WHITE,
                         Color.CYAN
-                    ])
+                    })
                     .boxed()
                     .collect(Collectors.toList())
                     )
@@ -47,7 +48,7 @@ public class FlowFieldConfigSerializer implements Serializer<FlowFieldConfigProt
     }
 
     @Override
-    public void writeTo(FlowFieldConfigProto t, OutputStream output) {
+    public void writeTo(FlowFieldConfigProto t, OutputStream output) throws IOException {
         t.writeTo(output);
     }
 }
