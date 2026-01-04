@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
     // List of vars needed for generators
     private Button generateButton;
-    private SeekBar speedSeek;
-    private SeekBar particleCountSeek;
 
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -53,16 +51,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openFlowFieldView() {
+        // Headers
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
+
+        // Buttons
         Button backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(v -> openMainView());
-        speedSeek = findViewById(R.id.speedSeek);
-        particleCountSeek = findViewById(R.id.particleCountSeek);
         generateButton = findViewById(R.id.generateButton);
         generateButton.setOnClickListener(v -> flowFieldGenerate());
         TextView particleCountLabel = findViewById(R.id.particleCountLabel);
         TextView speedLabel = findViewById(R.id.speedLabel);
+
+        // SeekBars
+        SeekBar speedSeek = findViewById(R.id.speedSeek);
+        SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
         particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
@@ -79,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onStartTrackingTouch(SeekBar seekbar) {}
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
         });
-        TextView generatorLabel = findViewById(R.id.generatorLabel);    
+        speedSeek.incrementProgressBy(10);
+        partcileCountSeek.incrementProgressBy(50);
     }
 
     private void flowFieldGenerate() {
@@ -88,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
 
+        SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
+        SeekBar speedSeek = findViewById(R.id.speedSeek)
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
