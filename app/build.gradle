@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+    id "com.google.protobuf" version "0.9.4"
 }
 
 android {
@@ -59,9 +60,27 @@ android {
         textOutput file("$buildDir/reports/lint/lint-results.txt")
     }
 }
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.1"
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
+}
+
 dependencies {
     implementation "androidx.appcompat:appcompat:1.6.1"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.core:core:1.12.0"
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "com.google.protobuf:protobuf-javalite:3.25:1"
 }
