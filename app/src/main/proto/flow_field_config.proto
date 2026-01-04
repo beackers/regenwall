@@ -8,11 +8,11 @@ message FlowFieldConfigProto {
   int32 particleCount = 2;
   int32 steps = 3;
   int32 alpha = 4;
-  int32 backgroundColor = 5
+  int32 backgroundColor = 5;
   float speed = 6;
   float angleRange = 7;
   float strokeWidth = 8;
   float noiseScale = 9;
   repeated int32 palette = 10;
 }
-  
+
