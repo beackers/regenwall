@@ -1,3 +1,5 @@
+package com.beackers.regenwall.datastore;
+
 import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.flowfield.FlowFieldConfig;
 

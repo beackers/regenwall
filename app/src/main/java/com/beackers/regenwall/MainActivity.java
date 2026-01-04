@@ -17,6 +17,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// datastore
+import com.beackers.regenwall.datastore.FlowFieldConfigProto;
+import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
+import androidx.datastore.core.DataStore;
+
 // my own stuff
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
 import com.beackers.regenwall.flowfield.FlowFieldConfig;
@@ -54,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         // Headers
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
+        RegenwallApp app = (RegenwallApp) getApplication();
+        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
 
         // Buttons
         Button backButton = findViewById(R.id.backButton);
@@ -83,17 +90,33 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
         });
         speedSeek.incrementProgressBy(10);
-        partcileCountSeek.incrementProgressBy(50);
+        particleCountSeek.incrementProgressBy(50);
+
+        // update stuff with last used config
+        executor.execute(() -> {
+            try {
+                FlowFieldConfigProto proto = store.getData().iterator().next();
+                FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+                mainHandler.post(() -> {
+                    speedSeek.setProgress((int)(config.speed * 100));
+                    particleCountSeek.setProgress(config.particleCount);
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void flowFieldGenerate() {
+        RegenwallApp app = (RegenwallApp) getApplication();
+        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
         generateButton.setEnabled(false);
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
 
         SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
-        SeekBar speedSeek = findViewById(R.id.speedSeek)
+        SeekBar speedSeek = findViewById(R.id.speedSeek);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
@@ -102,6 +125,11 @@ public class MainActivity extends AppCompatActivity {
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
+        store.updateDataAsync(currentProto -> {
+            FlowFieldConfigProto updated = FlowFieldConfigMapper.toProto(config);
+            return java.util.concurrent.CompletableFuture
+                .completedFuture(updated);
+        });
 
         executor.execute(() -> {
             Bitmap bitmap = generator.generate(
