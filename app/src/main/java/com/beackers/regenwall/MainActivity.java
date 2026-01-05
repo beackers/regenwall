@@ -20,15 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 // datastore
 import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
+import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
 import androidx.datastore.core.DataStore;
-import kotlin.Unit;
-import kotlinx.coroutines.Continuation;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.CoroutineScopeKt;
-import kotlinx.coroutines.CoroutineStart;
-import kotlinx.coroutines.Dispatchers;
-import kotlinx.coroutines.flow.FlowKt;
-import kotlinx.coroutines.BuildersKt;
 
 // my own stuff
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
@@ -69,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         generatorType = "FlowField";
         RegenwallApp app = (RegenwallApp) getApplication();
         DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
-        CoroutineScope scope = new CoroutineScopeKt.CoroutineScope(Dispatchers.getIO());
 
         // Buttons
         Button backButton = findViewById(R.id.backButton);
@@ -102,21 +94,10 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek.incrementProgressBy(50);
 
         // update stuff with last used config
-        BuildersKt.launch(
-                scope,
-                Dispatchers.getIO(),
-                CoroutineStart.DEFAULT,
-                (coroutineScope, continuation) -> {
-                    FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
-                    FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
-
-                    mainHandler.post(() -> {
-                        speedSeek.setProgress((int)(config.speed * 100));
-                        particleCountSeek.setProgress(config.particleCount);
-                    });
-
-                    return Unit.INSTANCE;
-        });
+        FlowFieldConfigProto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
+        FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+        speedSeek.setProgress((int)(config.speed * 100));
+        particleCountSeek.setProgress(config.particleCount);
     }
 
     private void flowFieldGenerate() {
@@ -142,15 +123,7 @@ public class MainActivity extends AppCompatActivity {
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
         FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);
-        CoroutineScope scope = new CoroutineScopeKt.CoroutineScope(Dispatchers.getIO());
-        BuildersKt.launch(
-                scope,
-                Dispatchers.getIO(),
-                CoroutineStart.DEFAULT,
-                (scope, continuation) -> {
-                    FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);
-                    return Unit.INSTANCE;
-                });
+        FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);
 
         // do some generatin'
         executor.execute(() -> {
