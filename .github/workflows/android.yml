@@ -39,7 +39,6 @@ jobs:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
       - name: Lint Everything But Java
         run: ./gradlew lintDebug -x compileDebugJavaWithJavac
-        continue-on-error: true
 
       - name: Lint (Java Edition)
         run: ./gradlew lintDebug --continue

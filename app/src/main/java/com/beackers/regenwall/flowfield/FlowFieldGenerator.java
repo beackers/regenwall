@@ -24,10 +24,6 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
 
         canvas.drawColor(config.backgroundColor);
 
-        int cellSize = config.cellSize;
-        int cols = width / cellSize;
-        int rows = height / cellSize;
-
         Random rng = new Random(config.seed);
 
         Paint paint = new Paint();

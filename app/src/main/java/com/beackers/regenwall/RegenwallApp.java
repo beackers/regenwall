@@ -34,7 +34,7 @@ public class RegenwallApp extends Application {
             Log.d("Regenwall", "Debug mode ON");
         }
 
-        flowFieldConfigStore = DataStoreFactory.create(
+        flowFieldConfigStore = DataStoreFactory.INSTANCE.create(
                 new FlowFieldConfigSerializer(),
                 () -> new File(getFilesDir(), DATASTORE_NAME)
                 );

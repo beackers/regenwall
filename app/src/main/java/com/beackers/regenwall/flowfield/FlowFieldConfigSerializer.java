@@ -48,7 +48,12 @@ public class FlowFieldConfigSerializer implements Serializer<FlowFieldConfigProt
     }
 
     @Override
-    public void writeTo(FlowFieldConfigProto t, OutputStream output) throws IOException {
+    public Object writeTo(
+            FlowFieldConfigProto t,
+            OutputStream output,
+            Continuation<? super Unit> continuation
+            ) throws IOException {
         t.writeTo(output);
+        return Unit.INSTANCE;
     }
 }

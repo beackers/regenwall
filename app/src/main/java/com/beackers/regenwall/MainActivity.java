@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         // update stuff with last used config
         executor.execute(() -> {
             try {
-                FlowFieldConfigProto proto = store.getData().iterator().next();
+                FlowFieldConfigProto proto = store.getData();
                 FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
                 mainHandler.post(() -> {
                     speedSeek.setProgress((int)(config.speed * 100));
