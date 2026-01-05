@@ -35,7 +35,7 @@ public class RegenwallApp extends Application {
         }
 
         flowFieldConfigStore = DataStoreFactory.INSTANCE.create(
-                new FlowFieldConfigSerializer(),
+                FlowFieldConfigSerializer.INSTANCE,
                 () -> new File(getFilesDir(), DATASTORE_NAME)
                 );
     }

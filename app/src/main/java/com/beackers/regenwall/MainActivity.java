@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek.incrementProgressBy(50);
 
         // update stuff with last used config
-        FlowFieldConfigProto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
+        FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
         FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
         speedSeek.setProgress((int)(config.speed * 100));
         particleCountSeek.setProgress(config.particleCount);
