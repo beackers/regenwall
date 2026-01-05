@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 fun readFlowFieldConfig(
     store: DataStore<FlowFieldConfigProto>
 ): FlowFieldConfigProto = runBlocking {
-    return store.data.first()
+    store.data.first()
 }
 
 fun writeFlowFieldConfig(
