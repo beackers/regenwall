@@ -22,7 +22,10 @@ import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
 import androidx.datastore.core.DataStore;
 import kotlin.Unit;
+import kotlinx.coroutines.Continuation;
 import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.CoroutineScopeKt;
+import kotlinx.coroutines.CoroutineStart;
 import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.flow.FlowKt;
 import kotlinx.coroutines.BuildersKt;
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         generatorType = "FlowField";
         RegenwallApp app = (RegenwallApp) getApplication();
         DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
-        CoroutineScope scope = new CoroutineScope(Dispatchers.getIO());
+        CoroutineScope scope = new CoroutineScopeKt.CoroutineScope(Dispatchers.getIO());
 
         // Buttons
         Button backButton = findViewById(R.id.backButton);
@@ -99,16 +102,20 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek.incrementProgressBy(50);
 
         // update stuff with last used config
-        BuildersKt.launch(scope, null, null, (coroutineScope, continuation) -> {
-            FlowFieldConfigProto proto = FlowKt.first(store.getData(), continuation);
-            FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+        BuildersKt.launch(
+                scope,
+                Dispatchers.getIO(),
+                CoroutineStart.DEFAULT,
+                (coroutineScope, continuation) -> {
+                    FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
+                    FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
 
-            mainHandler.post(() -> {
-                speedSeek.setProgress((int)(config.speed * 100));
-                particleCountSeek.setProgress(config.particleCount);
-            });
+                    mainHandler.post(() -> {
+                        speedSeek.setProgress((int)(config.speed * 100));
+                        particleCountSeek.setProgress(config.particleCount);
+                    });
 
-            return Unit.INSTANCE;
+                    return Unit.INSTANCE;
         });
     }
 
@@ -134,12 +141,14 @@ public class MainActivity extends AppCompatActivity {
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
+        FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);
+        CoroutineScope scope = new CoroutineScopeKt.CoroutineScope(Dispatchers.getIO());
         BuildersKt.launch(
-                new CoroutineScope(Dispatchers.getIO()),
-                null,
-                null,
+                scope,
+                Dispatchers.getIO(),
+                CoroutineStart.DEFAULT,
                 (scope, continuation) -> {
-                    store.updateData(current -> FlowFieldConfigMapper.toProto(config));
+                    FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);
                     return Unit.INSTANCE;
                 });
 
