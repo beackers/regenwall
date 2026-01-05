@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
         RegenwallApp app = (RegenwallApp) getApplication();
+        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
         CoroutineScope scope = new CoroutineScope(Dispatchers.getIO());
 
         // Buttons
@@ -135,8 +136,8 @@ public class MainActivity extends AppCompatActivity {
         config.seed = System.currentTimeMillis();
         BuildersKt.launch(
                 new CoroutineScope(Dispatchers.getIO()),
-                null.
-                null.
+                null,
+                null,
                 (scope, continuation) -> {
                     store.updateData(current -> FlowFieldConfigMapper.toProto(config));
                     return Unit.INSTANCE;
