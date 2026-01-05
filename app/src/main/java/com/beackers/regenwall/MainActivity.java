@@ -21,6 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
 import androidx.datastore.core.DataStore;
+import kotlin.Unit;
+import kotlinx.coroutines.CoroutineScope;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.flow.FlowKt;
+import kotlinx.coroutines.BuildersKt;
 
 // my own stuff
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
@@ -60,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
         RegenwallApp app = (RegenwallApp) getApplication();
-        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
+        CoroutineScope scope = new CoroutineScope(Dispatchers.getIO());
 
         // Buttons
         Button backButton = findViewById(R.id.backButton);
@@ -93,21 +98,21 @@ public class MainActivity extends AppCompatActivity {
         particleCountSeek.incrementProgressBy(50);
 
         // update stuff with last used config
-        executor.execute(() -> {
-            try {
-                FlowFieldConfigProto proto = store.getData();
-                FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
-                mainHandler.post(() -> {
-                    speedSeek.setProgress((int)(config.speed * 100));
-                    particleCountSeek.setProgress(config.particleCount);
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        BuildersKt.launch(scope, null, null, (coroutineScope, continuation) -> {
+            FlowFieldConfigProto proto = FlowKt.first(store.getData(), continuation);
+            FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+
+            mainHandler.post(() -> {
+                speedSeek.setProgress((int)(config.speed * 100));
+                particleCountSeek.setProgress(config.particleCount);
+            });
+
+            return Unit.INSTANCE;
         });
     }
 
     private void flowFieldGenerate() {
+        // headers
         RegenwallApp app = (RegenwallApp) getApplication();
         DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
         generateButton.setEnabled(false);
@@ -115,22 +120,29 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
 
+        // variables
         SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
         SeekBar speedSeek = findViewById(R.id.speedSeek);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
         FlowFieldConfig config = new FlowFieldConfig();
+
+        // save current config
         config.defaultConfig();
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
-        store.updateDataAsync(currentProto -> {
-            FlowFieldConfigProto updated = FlowFieldConfigMapper.toProto(config);
-            return java.util.concurrent.CompletableFuture
-                .completedFuture(updated);
-        });
+        BuildersKt.launch(
+                new CoroutineScope(Dispatchers.getIO()),
+                null.
+                null.
+                (scope, continuation) -> {
+                    store.updateData(current -> FlowFieldConfigMapper.toProto(config));
+                    return Unit.INSTANCE;
+                });
 
+        // do some generatin'
         executor.execute(() -> {
             Bitmap bitmap = generator.generate(
                     width,
