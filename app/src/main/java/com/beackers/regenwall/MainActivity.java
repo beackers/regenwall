@@ -17,6 +17,12 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+// datastore
+import com.beackers.regenwall.datastore.FlowFieldConfigProto;
+import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
+import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
+import androidx.datastore.core.DataStore;
+
 // my own stuff
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
 import com.beackers.regenwall.flowfield.FlowFieldConfig;
@@ -54,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         // Headers
         setContentView(R.layout.flow_field);
         generatorType = "FlowField";
+        RegenwallApp app = (RegenwallApp) getApplication();
+        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
 
         // Buttons
         Button backButton = findViewById(R.id.backButton);
@@ -77,32 +85,47 @@ public class MainActivity extends AppCompatActivity {
         speedSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-                speedLabel.setText("Particle speed: " + progress);
+                speedLabel.setText("Particle speed: " + (progress / 100f));
             }
             @Override public void onStartTrackingTouch(SeekBar seekbar) {}
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
         });
         speedSeek.incrementProgressBy(10);
-        partcileCountSeek.incrementProgressBy(50);
+        particleCountSeek.incrementProgressBy(50);
+
+        // update stuff with last used config
+        FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
+        FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+        speedSeek.setProgress((int)(config.speed * 100));
+        particleCountSeek.setProgress(config.particleCount);
     }
 
     private void flowFieldGenerate() {
+        // headers
+        RegenwallApp app = (RegenwallApp) getApplication();
+        DataStore<FlowFieldConfigProto> store = app.getFlowFieldConfigStore();
         generateButton.setEnabled(false);
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setProgress(0);
         progressBar.setVisibility(View.VISIBLE);
 
+        // variables
         SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
         SeekBar speedSeek = findViewById(R.id.speedSeek);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
         FlowFieldConfig config = new FlowFieldConfig();
+
+        // save current config
         config.defaultConfig();
         config.particleCount = Math.max(500, particleCountSeek.getProgress());
         config.speed = speedSeek.getProgress() / 100f;
         config.seed = System.currentTimeMillis();
+        FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);
+        FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);
 
+        // do some generatin'
         executor.execute(() -> {
             Bitmap bitmap = generator.generate(
                     width,
@@ -132,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
             dontSave.setOnClickListener(v -> openFlowFieldView());
             doSave.setOnClickListener(v -> {
                 SaveImage.SaveToPictures(this, image);
+                // "true" denotes only saving as wallpaper image, not as lock screen
+                // can be user-configurable later
+                SaveImage.SaveAsWallpaper(this, image, true);
                 openFlowFieldView();
             });
         }

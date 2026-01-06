@@ -7,7 +7,6 @@ public class FlowFieldConfig extends ArtConfig {
     public long seed;
     public int particleCount;
     public int steps;
-    public int cellSize;
     public float speed;
     public float angleRange;
     public int alpha;
@@ -21,7 +20,6 @@ public class FlowFieldConfig extends ArtConfig {
         this.seed = System.currentTimeMillis();
         this.particleCount = 5000;
         this.steps = 300;
-        this.cellSize = 40;
         this.speed = 1.5f;
         this.angleRange = 1.0f;
         this.alpha = 20;

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "com.beackers.regenwall.datastore";
+option java_multiple_files = true;
+
+message FlowFieldConfigProto {
+  int64 seed = 1;
+  int32 particleCount = 2;
+  int32 steps = 3;
+  int32 alpha = 4;
+  int32 backgroundColor = 5;
+  float speed = 6;
+  float angleRange = 7;
+  float strokeWidth = 8;
+  float noiseScale = 9;
+  repeated int32 palette = 10;
+}
+
