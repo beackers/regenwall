@@ -45,9 +45,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles("**/*.gradle*", "**/gradle-wrapper.properties")
-        if: always()
-
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
       
       - name: Lint Everything But Java
         run: ./gradlew lintDebug -x compileDebugJavaWithJavac compileDebugKotlin
