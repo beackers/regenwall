@@ -9,3 +9,4 @@ build.sh
 /gradle*/*
 *.b64
 /java
+todo*.*
