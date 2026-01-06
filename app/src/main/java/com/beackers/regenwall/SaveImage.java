@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.app.WallpaperManager;
+
 
 import java.io.OutputStream;
 import java.io.IOException;
@@ -33,5 +35,22 @@ public class SaveImage {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void SaveAsWallpaper(Context context, Bitmap bitmap, boolean justSystem) {
+        WallpaperManager wm = WallpaperManager.getInstance(context);
+        try {
+            if (justSystem) {
+                wm.setBitmap(
+                    bitmap,
+                    null,
+                    true,
+                    WallpaperManager.FLAG_SYSTEM
+                        );
+            } else {
+                wm.setBitmap(bitmap);
+            }
+        }
+        catch (IOException e) { e.printStackTrace(); }
     }
 }

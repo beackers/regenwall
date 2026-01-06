@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         speedSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-                speedLabel.setText("Particle speed: " + progress);
+                speedLabel.setText("Particle speed: " + (progress / 100f));
             }
             @Override public void onStartTrackingTouch(SeekBar seekbar) {}
             @Override public void onStopTrackingTouch(SeekBar seekbar) {}
@@ -155,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
             dontSave.setOnClickListener(v -> openFlowFieldView());
             doSave.setOnClickListener(v -> {
                 SaveImage.SaveToPictures(this, image);
+                // "true" denotes only saving as wallpaper image, not as lock screen
+                // can be user-configurable later
+                SaveImage.SaveAsWallpaper(this, image, true);
                 openFlowFieldView();
             });
         }
