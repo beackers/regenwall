@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
-        SeekBar speedSeek = findViewById(R.id.speedSeek)
+        SeekBar speedSeek = findViewById(R.id.speedSeek);
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDisplayMetrics().heightPixels;
         FlowFieldGenerator generator = new FlowFieldGenerator();
