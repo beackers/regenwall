@@ -13,7 +13,9 @@ And the best part? It's FOSS (Free and Open-Source Software). Even better than f
 * **Initial release!** Always a fun time.
 * Local Perlin Noise generator
 * Fully customizable
-* ... works
+* Live wallpaper service
+* ... it just plain works
+
 **RegenWall is still a prerelease! v1 coming soon, I promise :)**
 
 # downloading
@@ -21,6 +23,7 @@ And the best part? It's FOSS (Free and Open-Source Software). Even better than f
 2. Find the latest release
 3. Scroll down to regenwall.apk and click that link to download
 4. Open your file explorer and click on the newly downloaded app to install
+
 It's not complicated.
 
 ... until it gets complicated.  
@@ -36,6 +39,6 @@ Some generators (v1: the one generator) might take longer if you max certain set
 That's it!
 
 # contributing
-**help wanted**
+**help wanted!**
 
 No joke, building an Android app is a long, complicated process that takes a lot of effort (if you're me and you wrote this on a flip phone with a keyboard plugged in). In short: if you want to help, fork the repo and create a PR when you're ready. There's lots of things I haven't gotten around to and need to.

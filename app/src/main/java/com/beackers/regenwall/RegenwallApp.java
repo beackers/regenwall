@@ -9,6 +9,9 @@ import androidx.datastore.core.DataStoreFactory;
 import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.datastore.FlowFieldConfigSerializer;
 
+import android.app.WallpaperManager;
+import android.content.ComponentName;
+
 import java.io.File;
 
 public class RegenwallApp extends Application {
@@ -42,5 +45,14 @@ public class RegenwallApp extends Application {
 
     public DataStore<FlowFieldConfigProto> getFlowFieldConfigStore() {
         return flowFieldConfigStore;
+    }
+
+    public void setLiveWallpaper(Context context) {
+        WallpaperManager wm = WallpaperManager.getInstance(context);
+        ComponentName component = new ComponentName(
+            context,
+            RegenWallpaperService.class
+            );
+        wm.setWallpaperComponent(component);
     }
 }
