@@ -6,7 +6,7 @@ import android.os.Looper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.Log;
+import android.util.Log;
 
 import android.graphics.Bitmap;
 import android.widget.Button;
