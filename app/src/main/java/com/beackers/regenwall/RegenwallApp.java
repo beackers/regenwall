@@ -11,6 +11,8 @@ import com.beackers.regenwall.datastore.FlowFieldConfigSerializer;
 
 import android.app.WallpaperManager;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 
 import com.beackers.regenwall.livepaper.LivepaperService;
 
@@ -50,11 +52,12 @@ public class RegenwallApp extends Application {
     }
 
     public void setLivepaper(Context context) {
-        WallpaperManager wm = WallpaperManager.getInstance(context);
-        ComponentName component = new ComponentName(
-            context,
-            LivepaperService.class
-            );
-        wm.setWallpaperComponent(component);
+        Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+        intent.putExtra(
+                WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
+                new ComponentName(context, LivepaperService.class)
+                );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
