@@ -3,12 +3,12 @@ package com.beackers.regenwall.livepaper
 import android.service.wallpaper.WallpaperService
 import android.view.SurfaceHolder
 
-class RegenWallpaperService : WallpaperService() {
+class LivepaperService : WallpaperService() {
     override fun onCreateEngine(): Engine {
-        return RegenEngine()
+        return LivepaperEngine()
     }
 
-    inner class RegenEngine : Engine() {
+    inner class LivepaperEngine : Engine() {
         override fun onSurfaceCreated(holder: SurfaceHolder) {
             super.onSurfaceCreated(holder)
             // drawing setup here

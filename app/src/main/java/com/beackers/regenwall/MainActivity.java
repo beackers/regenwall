@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> openMainView());
         generateButton = findViewById(R.id.generateButton);
         generateButton.setOnClickListener(v -> flowFieldGenerate());
+        Button setLivepaperButton = findViewById(R.id.setLivepaper);
+        setLivepaperButton.setOnclickListener(v -> app.setLivepaper(this));
         TextView particleCountLabel = findViewById(R.id.particleCountLabel);
         TextView speedLabel = findViewById(R.id.speedLabel);
 
