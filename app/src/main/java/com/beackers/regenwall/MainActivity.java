@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 SaveImage.SaveToPictures(this, image);
                 // "true" denotes only saving as wallpaper image, not as lock screen
                 // can be user-configurable later
-                try {SaveImage.SaveAsWallpaper(this, image, true)}
+                try {SaveImage.SaveAsWallpaper(this, image, true);}
                 catch (Exception e) {
                     e.printStackTrace();
                     Log.d("Regenwall", "Error setting wallpaper");
