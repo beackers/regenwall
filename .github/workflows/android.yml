@@ -18,6 +18,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
       - name: Make Gradle executable
         run: chmod +x gradlew
@@ -37,8 +38,24 @@ jobs:
           echo "$KEYSTORE_B64" | base64 --decode > regenwall.keystore
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+
+
+      - name: Cache Gradle Packages (hopefully)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+      
       - name: Lint Everything But Java
         run: ./gradlew lintDebug -x compileDebugJavaWithJavac compileDebugKotlin
+        env:
+          GRADLE_OPTS: >
+            -Dorg.gradle.internal.http.connectionTimeout=60000
+            -Dorg.gradle.internal.http.socketTimeout=60000
+            -Dorg.gradle.internal.repository.max.retries=5
+            -Dorg.gradle.internal.repository.initial.backoff=2000
 
       - name: Lint (Java Kaught Lint Edition)
         run: ./gradlew lintDebug --continue

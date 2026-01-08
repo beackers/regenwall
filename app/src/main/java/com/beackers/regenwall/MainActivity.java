@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.util.Log;
 
 import android.graphics.Bitmap;
 import android.widget.Button;
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> openMainView());
         generateButton = findViewById(R.id.generateButton);
         generateButton.setOnClickListener(v -> flowFieldGenerate());
+        Button setLivepaperButton = findViewById(R.id.setLivepaper);
+        setLivepaperButton.setOnClickListener(v -> app.setLivepaper(this));
         TextView particleCountLabel = findViewById(R.id.particleCountLabel);
         TextView speedLabel = findViewById(R.id.speedLabel);
 
@@ -157,7 +160,11 @@ public class MainActivity extends AppCompatActivity {
                 SaveImage.SaveToPictures(this, image);
                 // "true" denotes only saving as wallpaper image, not as lock screen
                 // can be user-configurable later
-                SaveImage.SaveAsWallpaper(this, image, true);
+                try {SaveImage.SaveAsWallpaper(this, image, true);}
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("Regenwall", "Error setting wallpaper");
+                }
                 openFlowFieldView();
             });
         }

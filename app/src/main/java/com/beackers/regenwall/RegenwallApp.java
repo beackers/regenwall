@@ -9,7 +9,18 @@ import androidx.datastore.core.DataStoreFactory;
 import com.beackers.regenwall.datastore.FlowFieldConfigProto;
 import com.beackers.regenwall.datastore.FlowFieldConfigSerializer;
 
+import android.app.WallpaperManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+
+import com.beackers.regenwall.livepaper.LivepaperService;
+import com.beackers.regenwall.crashcar.CrashReportActivity;
+
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.Thread;
 
 public class RegenwallApp extends Application {
     
@@ -21,7 +32,32 @@ public class RegenwallApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // set crash reporter
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+            try {
+                File file = new File(getFilesDir(), "last_crash.txt");
+                FileWriter writer = new FileWriter(file);
+
+                writer.write("Thread: " + thread.getName() + "\n\n");
+                writer.write(Log.getStackTraceString(throwable));
+                writer.flush();
+                writer.close();
+            } catch (Exception ignored) {}
+            System.exit(2);
+        });
+
+        // check no crash reports
+        File crashFile = new File(getFilesDir(), "last_crash.txt");
+        if (crashFile.exists() && BuildInfo.DEBUG) {
+            Intent intent = new Intent(this, CrashReportActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
+        }
         
+        // set thread policy
         if (BuildInfo.DEBUG) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectAll()
@@ -34,6 +70,7 @@ public class RegenwallApp extends Application {
             Log.d("Regenwall", "Debug mode ON");
         }
 
+        // datastore
         flowFieldConfigStore = DataStoreFactory.INSTANCE.create(
                 FlowFieldConfigSerializer.INSTANCE,
                 () -> new File(getFilesDir(), DATASTORE_NAME)
@@ -42,5 +79,16 @@ public class RegenwallApp extends Application {
 
     public DataStore<FlowFieldConfigProto> getFlowFieldConfigStore() {
         return flowFieldConfigStore;
+    }
+
+    // live wallpaper
+    public void setLivepaper(Context context) {
+        Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+        intent.putExtra(
+                WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
+                new ComponentName(context, LivepaperService.class)
+                );
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
