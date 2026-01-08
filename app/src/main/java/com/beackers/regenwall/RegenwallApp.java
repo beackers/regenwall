@@ -49,10 +49,12 @@ public class RegenwallApp extends Application {
 
         // check no crash reports
         File crashFile = new File(getFilesDir(), "last_crash.txt");
-        if (crashFile.exists()) {
+        if (crashFile.exists() && BuildInfo.DEBUG) {
             Intent intent = new Intent(this, CrashReportActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        } else {
+            // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
         }
         
         // set thread policy
