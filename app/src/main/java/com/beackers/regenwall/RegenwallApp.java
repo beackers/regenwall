@@ -36,15 +36,25 @@ public class RegenwallApp extends Application {
         // set crash reporter
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             try {
-                File file = new File(getFilesDir(), "last_crash.txt");
-                FileWriter writer = new FileWriter(file);
-
-                writer.write("Thread: " + thread.getName() + "\n\n");
-                writer.write(Log.getStackTraceString(throwable));
-                writer.flush();
-                writer.close();
-            } catch (Exception ignored) {}
-            System.exit(2);
+                File dir = getFilesDir();
+                if (dir != null) {
+                    File file = File(dir, "last_crash.txt");
+                    FileWriter writer = null;
+                    try {
+                        writer = new FileWriter(file);
+                        writer.write(Log.getStackTraceString(throwable));
+                    } finally {
+                        if (writer != null) writer.close();
+                    }
+                }
+                Intent crashIntent = new Intent(this, CrashReportActivity.class);
+                crashIntent.putExtra("crash", Log.getStackTraceString(throwable));
+                crashIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(crashIntent);
+            } catch (Exception e) {
+                    // gotta catch em all
+                    Log.e("Regenwall", "Crash handler failed", e);
+                }
         });
 
         // check no crash reports
