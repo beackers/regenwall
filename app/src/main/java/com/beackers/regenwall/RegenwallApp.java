@@ -38,7 +38,7 @@ public class RegenwallApp extends Application {
             try {
                 File dir = getFilesDir();
                 if (dir != null) {
-                    File file = File(dir, "last_crash.txt");
+                    File file = new File(dir, "last_crash.txt");
                     FileWriter writer = null;
                     try {
                         writer = new FileWriter(file);
