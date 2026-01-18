@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.view.View;
+import android.content.Intent;
 
 import java.io.File;
 import java.io.IOException;
