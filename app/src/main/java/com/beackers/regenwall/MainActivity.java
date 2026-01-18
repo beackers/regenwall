@@ -15,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.view.View;
+import android.widget.Toast;
 import android.content.Intent;
 
 import java.io.File;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        Toast.makeText(this, "ReGenWall MainActivity started", Toast.LENGTH_LONG).show();
         // check no crash reports
         File crashFile = new File(getFilesDir(), "last_crash.txt");
         if (crashFile.exists() && BuildInfo.DEBUG) {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
         }
+        Toast.makeText(this, "openMainView", Toast.LENGTH_LONG).show();
         openMainView();
     }
 
