@@ -59,19 +59,21 @@ public class MainActivity extends AppCompatActivity {
         // check no crash reports
         File crashFile = new File(getFilesDir(), "last_crash.txt");
         if (crashFile.exists() && BuildInfo.DEBUG) {
+            Toast.makeText(this, "crash detected", Toast.LENGTH_LONG).show();
             // String text = readFileToString(crashFile);
 
             Intent intent = new Intent(this, CrashReportActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             // intent.putExtra("crash", text);
             startActivity(intent);
+            Toast.makeText(this, "intent started", Toast.LENGTH_LONG).show();
 
             finish();
             return;
         } else {
             // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
         }
-        Toast.makeText(this, "openMainView", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "finished onCreate", Toast.LENGTH_LONG).show();
         openMainView();
     }
 
