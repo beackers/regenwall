@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        /* BINARY TESTING
         // check no crash reports
         File crashFile = new File(getFilesDir(), "last_crash.txt");
         if (crashFile.exists() && BuildInfo.DEBUG && !showedCrashLog) {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
         }
-        
+        */
         openMainView();
     }
 
