@@ -16,6 +16,9 @@ import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.view.View;
 
+import java.io.File;
+import java.io.IOException;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 // datastore
@@ -25,6 +28,7 @@ import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
 import androidx.datastore.core.DataStore;
 
 // my own stuff
+import com.beackers.regenwall.crashcar.CrashReportActivity;
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
 import com.beackers.regenwall.flowfield.FlowFieldConfig;
 
@@ -41,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     // List of vars needed for generators
     private Button generateButton;
 
+    // Crash handling
+    private static boolean showedCrashLog = false;
+
     // Thread handling
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -48,6 +55,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // check no crash reports
+        File crashFile = new File(getFilesDir(), "last_crash.txt");
+        if (crashFile.exists() && BuildInfo.DEBUG && !showedCrashLog) {
+            showedCrashLog = true;
+
+            Intent intent = new Intent(this, CrashReportActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+        } else {
+            // later might add something for reporting the crash via GitHub Issues? Not sure how that would work.
+        }
+        
         openMainView();
     }
 
