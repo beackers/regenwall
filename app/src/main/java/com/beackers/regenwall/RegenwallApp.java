@@ -60,8 +60,6 @@ public class RegenwallApp extends Application {
         });
 
         // check no crash reports
-        // BINARY DEBUG -- TESTING CRASH HANDLER
-        /*
         File crashFile = new File(getFilesDir(), "last_crash.txt");
         if (crashFile.exists() && BuildInfo.DEBUG) {
             Intent intent = new Intent(this, CrashReportActivity.class);
@@ -89,7 +87,7 @@ public class RegenwallApp extends Application {
                 FlowFieldConfigSerializer.INSTANCE,
                 () -> new File(getFilesDir(), DATASTORE_NAME)
                 );
-    */
+    
     }
 
     public DataStore<FlowFieldConfigProto> getFlowFieldConfigStore() {
