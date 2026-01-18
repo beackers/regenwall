@@ -22,6 +22,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Thread;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class RegenwallApp extends Application {
     
     private static final String DATASTORE_NAME = "flow_field_config.pb";
@@ -38,7 +41,10 @@ public class RegenwallApp extends Application {
             try {
                 File dir = getFilesDir();
                 if (dir != null) {
-                    File file = new File(dir, "last_crash.txt");
+                    String timestamp = LocalDateTime.now()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+                    String filename = "exc_" + timestamp + ".txt";
+                    File file = new File(dir, filename);
                     FileWriter writer = null;
                     try {
                         writer = new FileWriter(file);
@@ -54,6 +60,8 @@ public class RegenwallApp extends Application {
             } catch (Exception e) {
                     // gotta catch em all
                     Log.e("Regenwall", "Crash handler failed", e);
+            } finally {
+                System.exit(1);
             }
         });
 
@@ -86,11 +94,16 @@ public class RegenwallApp extends Application {
     // live wallpaper
     public void setLivepaper(Context context) {
         Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
+        if (intent.resolveActivity(getPackageManager()) == null) {
+            Toast.makeText(this, "Your device doesn't support live wallpapers", Toast.LENGTH_LONG).show();
+            return;
+        }
         intent.putExtra(
                 WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, LivepaperService.class)
                 );
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+        return;
     }
 }

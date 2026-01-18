@@ -1,36 +1,46 @@
 package com.beackers.regenwall.crashcar;
 
-import java.io.File;
-import android.util.Log;
-import android.content.Intent;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.nio.file.Files;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.beackers.regenwall.R;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CrashReportActivity extends Activity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(this, "started CrashReportActivity", Toast.LENGTH_LONG).show();
+        setContentView(R.layout.crash_report_main);
 
-        TextView tv = new TextView(this);
-        tv.setTextSize(12);
-        tv.setPadding(16, 16, 16, 16);
-        tv.setText(readCrash());
+        RecyclerView recycler = findViewById(R.id.crashList);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        setContentView(tv);
+        File dir = getFilesDir();
+
+        File[] found = dir.listFiles((d, name) -> name.startsWith("exc_"));
+
+        List<File> files = new ArrayList<>();
+
+        if (found != null) {
+            files.addAll(Arrays.asList(found));
+        }
+
+        CrashAdapter adapter = new CrashAdapter(files, this::openFile);
+        recycler.setAdapter(adapter);
     }
 
-    private String readCrash() {
-        Toast.makeText(this, "reading crash file", Toast.LENGTH_LONG).show();
-        try {
-            File file = new File(getFilesDir(), "last_crash.txt");
-            return new String(Files.readAllBytes(file.toPath()));
-        } catch (Exception e) {
-            return "Could not read crash report.";
-        }
+    private void openFile(File file) {
+        Intent i = new Intent(this, CrashViewerActivity.class);
+        i.putExtra("file", file.getAbsolutePath());
+        startActivity(i);
     }
 }

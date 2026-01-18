@@ -5,5 +5,13 @@
     <application
         android:debuggable="true"
         android:usesCleartextTraffic="true"
-        tools:replace="android:usesCleartextTraffic" />
+        tools:replace="android:usesCleartextTraffic">
+    <activity
+        android:name=".crashcar.CrashReportActivity"
+        android:exported="false">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN">
+            <category android:name="android.intent.category.LAUNCHER">
+        </intent-filter>
+    </application>
 </manifest>
