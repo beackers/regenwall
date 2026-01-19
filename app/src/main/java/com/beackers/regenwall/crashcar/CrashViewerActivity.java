@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class CrashViewerActivity extends Activity {
     @Override
@@ -25,8 +27,10 @@ public class CrashViewerActivity extends Activity {
         String path = getIntent().getStringExtra("file");
         File file = new File(path);
 
+        String content = new String(Files.readAllBytes(Paths.get(path)));
+
         TextView tv = findViewById(R.id.crashText);
-        tv.setText(readFile(file));
+        tv.setText(content);
 
         findViewById(R.id.copyButton).setOnClickListener(v -> copy(tv));
         findViewById(R.id.deleteButton).setOnClickListener(v -> delete(file));
