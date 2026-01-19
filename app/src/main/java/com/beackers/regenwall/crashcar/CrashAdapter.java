@@ -1,5 +1,7 @@
 package com.beackers.regenwall.crashcar;
 
+import com.beackers.regenwall.R;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

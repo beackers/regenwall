@@ -13,6 +13,7 @@ import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.beackers.regenwall.livepaper.LivepaperService;
 import com.beackers.regenwall.crashcar.CrashReportActivity;
