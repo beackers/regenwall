@@ -27,7 +27,12 @@ public class CrashViewerActivity extends Activity {
         String path = getIntent().getStringExtra("file");
         File file = new File(path);
 
-        String content = new String(Files.readAllBytes(Paths.get(path)));
+        String content;
+        try {
+            content = new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            Toast.makeText(this, "IOException occured", Toast.LENGTH_SHORT).show();
+        }
 
         TextView tv = findViewById(R.id.crashText);
         tv.setText(content);
