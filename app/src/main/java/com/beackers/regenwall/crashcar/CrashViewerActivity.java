@@ -28,14 +28,14 @@ public class CrashViewerActivity extends Activity {
         File file = new File(path);
 
         String content;
+        TextView tv = findViewById(R.id.crashText);
         try {
             content = new String(Files.readAllBytes(Paths.get(path)));
+            tv.setText(content);
         } catch (IOException e) {
             Toast.makeText(this, "IOException occured", Toast.LENGTH_SHORT).show();
         }
 
-        TextView tv = findViewById(R.id.crashText);
-        tv.setText(content);
 
         findViewById(R.id.copyButton).setOnClickListener(v -> copy(tv));
         findViewById(R.id.deleteButton).setOnClickListener(v -> delete(file));
