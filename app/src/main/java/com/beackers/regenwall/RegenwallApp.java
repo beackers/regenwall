@@ -54,10 +54,13 @@ public class RegenwallApp extends Application {
                         if (writer != null) writer.close();
                     }
                 }
+                // starts crash viewer activity
+                /*
                 Intent crashIntent = new Intent(this, CrashReportActivity.class);
                 crashIntent.putExtra("crash", Log.getStackTraceString(throwable));
                 crashIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(crashIntent);
+                */
             } catch (Exception e) {
                     // gotta catch em all
                     Log.e("Regenwall", "Crash handler failed", e);
