@@ -51,6 +51,8 @@ public class SaveImage {
                 wm.setBitmap(bitmap);
             }
         }
-        catch (IOException e) { e.printStackTrace(); }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
