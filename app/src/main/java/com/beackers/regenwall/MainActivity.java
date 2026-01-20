@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.util.Log;
 
 import android.graphics.Bitmap;
 import android.widget.Button;
@@ -14,6 +15,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.view.View;
+import android.widget.Toast;
+import android.content.Intent;
+
+import java.io.File;
+import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,6 +30,7 @@ import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
 import androidx.datastore.core.DataStore;
 
 // my own stuff
+import com.beackers.regenwall.crashcar.CrashReportActivity;
 import com.beackers.regenwall.flowfield.FlowFieldGenerator;
 import com.beackers.regenwall.flowfield.FlowFieldConfig;
 
@@ -44,9 +51,18 @@ public class MainActivity extends AppCompatActivity {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // check no crash reports
+        File crashDir = getFilesDir();
+        File[] exceptions = crashDir.listFiles((dir, name) -> name.startsWith("exc_"));
+        if (exceptions.length > 0 && BuildInfo.DEBUG) {
+            Toast.makeText(this, "exceptions detected - " + exceptions.length, Toast.LENGTH_LONG).show();
+        }
+
         openMainView();
     }
 
@@ -68,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> openMainView());
         generateButton = findViewById(R.id.generateButton);
         generateButton.setOnClickListener(v -> flowFieldGenerate());
+        Button setLivepaperButton = findViewById(R.id.setLivepaper);
+        setLivepaperButton.setOnClickListener(v -> app.setLivepaper(this));
         TextView particleCountLabel = findViewById(R.id.particleCountLabel);
         TextView speedLabel = findViewById(R.id.speedLabel);
 
@@ -157,7 +175,11 @@ public class MainActivity extends AppCompatActivity {
                 SaveImage.SaveToPictures(this, image);
                 // "true" denotes only saving as wallpaper image, not as lock screen
                 // can be user-configurable later
-                SaveImage.SaveAsWallpaper(this, image, true);
+                try {SaveImage.SaveAsWallpaper(this, image, true);}
+                catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d("Regenwall", "Error setting wallpaper");
+                }
                 openFlowFieldView();
             });
         }

@@ -3,13 +3,6 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="back to generators list" />
-
     <TextView
         android:id="@+id/generatorLabel"
         android:layout_width="wrap_content"
@@ -17,11 +10,30 @@
         android:text="Using Particle Generator"
         android:textSize="14sp"
         android:paddingTop="8dp" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="back" />
     <Button
         android:id="@+id/generateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Generate Wallpaper" />
+        android:layout_weight="1"
+        android:text="generate" />
+</LinearLayout>
+
+    <Button
+        android:id="@+id/setLivepaper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set live wallpaper" />
     <TextView
         android:id="@+id/particleCountLabel"
         android:layout_width="wrap_content"
