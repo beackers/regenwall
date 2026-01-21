@@ -1,6 +1,7 @@
 package com.beackers.regenwall;
 
 import android.os.Bundle;
+import com.beackers.regenwall.flowfield.FlowFieldActivity;
 
 import android.widget.Button;
 import android.widget.Toast;
@@ -26,7 +27,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button flowFieldButton = findViewById(R.id.flowFieldButton);
         Button viewCrashes = findViewById(R.id.viewCrashes);
-        flowFieldButton.setOnClickListener(v -> openFlowFieldView());
+        flowFieldButton.setOnClickListener(v -> {
+          Intent intent = new Intent(this, FlowFieldActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          startActivity(intent);
+        });
         viewCrashes.setOnClickListener(v -> {
             Intent intent = new Intent(this, CrashReportActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
