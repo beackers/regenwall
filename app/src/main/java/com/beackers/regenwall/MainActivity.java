@@ -69,7 +69,14 @@ public class MainActivity extends AppCompatActivity {
     private void openMainView() {
         setContentView(R.layout.activity_main);
         flowFieldButton = findViewById(R.id.flowFieldButton);
+        Button viewCrashes = findViewById(R.id.viewCrashes);
         flowFieldButton.setOnClickListener(v -> openFlowFieldView());
+        viewCrashes.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CrashReportActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        });
+        if (BuildInfo.DEBUG) viewCrashes.setVisibility(View.VISIBLE);
     }
 
     private void openFlowFieldView() {

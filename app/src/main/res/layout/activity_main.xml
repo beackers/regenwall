@@ -8,4 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Flow Field Generator" />
+    <Button
+      android:id="@+id/viewCrashes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="View Crash Logs"
+      android:visibility="gone" />
 </LinearLayout>
