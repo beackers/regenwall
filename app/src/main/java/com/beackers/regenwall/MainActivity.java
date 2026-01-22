@@ -6,11 +6,14 @@ import com.beackers.regenwall.flowfield.FlowFieldActivity;
 import android.widget.Button;
 import android.widget.Toast;
 import android.content.Intent;
+import android.view.View;
 
 import java.io.File;
 import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.beackers.regenwall.crashcar.CrashReportActivity;
 
 public class MainActivity extends AppCompatActivity {
     @Override

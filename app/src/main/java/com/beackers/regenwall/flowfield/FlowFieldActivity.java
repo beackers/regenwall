@@ -7,6 +7,10 @@ import com.beackers.regenwall.datastore.FlowFieldConfigMapper;
 import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
 import androidx.datastore.core.DataStore;
 import com.beackers.regenwall.RegenwallApp;
+import com.beackers.regenwall.PreviewActivity;
+
+import android.os.Handler;
+import android.os.Looper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,8 +37,8 @@ public class FlowFieldActivity extends Activity {
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-
-  public static void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     
     // Headers
@@ -137,6 +141,6 @@ public class FlowFieldActivity extends Activity {
     Intent intent = new Intent(this, PreviewActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.putExtra("image_path", outFile.getAbsolutePath());
-    startActvity(intent);
+    startActivity(intent);
   }
 }

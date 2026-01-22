@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.ImageView;
+import android.widget.Button;
 
 import java.io.File;
 import java.io.IOException;
 
 class PreviewActivity extends Activity {
-  public static void onCreate(Bundle savedInstanceState) {
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.view_image);
 
