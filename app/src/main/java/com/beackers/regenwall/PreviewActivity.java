@@ -10,7 +10,7 @@ import android.widget.Button;
 import java.io.File;
 import java.io.IOException;
 
-class PreviewActivity extends Activity {
+public class PreviewActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
