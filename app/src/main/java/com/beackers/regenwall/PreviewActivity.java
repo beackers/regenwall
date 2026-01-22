@@ -34,4 +34,5 @@ class PreviewActivity extends Activity {
         }
         finish();
     });
-    }
+  }
+}
