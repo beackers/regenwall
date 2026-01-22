@@ -3,6 +3,8 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- Top label -->
     <TextView
         android:id="@+id/generatorLabel"
         android:layout_width="wrap_content"
@@ -11,65 +13,84 @@
         android:textSize="14sp"
         android:paddingTop="8dp" />
 
+    <!-- Top buttons row -->
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/backButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="back" />
+
         <Button
             android:id="@+id/generateButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="generate" />
     </LinearLayout>
+
     <Button
         android:id="@+id/setLivepaper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="set live wallpaper" />
-    <ScrollView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/particleCountLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Particle Count"
-        android:textSize="14sp"
-        android:paddingTop="8dp" />
-    <SeekBar
-        android:id="@+id/particleCountSeek"
+    <!-- Scrollable middle -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:min="1"
-        android:max="2000" />
-    <TextView
-        android:id="@+id/speedLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Particle Speed"
-        android:textSize="14sp"
-        android:paddingTop="8dp" />
-    <SeekBar
-        android:id="@+id/speedSeek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:min="1"
-        android:max="500" />
-  </LinearLayout>
-  </ScrollView>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/particleCountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Particle Count"
+                android:textSize="14sp"
+                android:paddingTop="8dp" />
+
+            <SeekBar
+                android:id="@+id/particleCountSeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:min="1"
+                android:max="2000" />
+
+            <TextView
+                android:id="@+id/speedLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Particle Speed"
+                android:textSize="14sp"
+                android:paddingTop="8dp" />
+
+            <SeekBar
+                android:id="@+id/speedSeek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:min="1"
+                android:max="500" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom progress bar -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="100"
-      android:visibility="gone" />
+        android:visibility="gone" />
+
 </LinearLayout>
