@@ -7,6 +7,14 @@ import android.widget.TextView;
 import com.beackers.regenwall.ArtConfig;
 
 public class SliderBinding {
+
+  public interface ConfigGetter {
+    float get(ArtConfig C);
+  }
+  public interface ConfigSetter {
+    void set(ArtConfig c, float v);
+  }
+
   public final int seekId;
   public final int labelId;
   public final String format;
