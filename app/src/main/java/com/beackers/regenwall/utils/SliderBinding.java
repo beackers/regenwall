@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.beackers.regenwall.flowfield.FlowFieldConfig;
+
 public class SliderBinding {
   public final int seekId;
   public final int labelId;
