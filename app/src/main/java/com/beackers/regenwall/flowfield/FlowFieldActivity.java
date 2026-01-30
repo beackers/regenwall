@@ -24,6 +24,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.AdapterView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,9 +36,21 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.beackers.regenwall.utils.SliderBinding;
+
 public class FlowFieldActivity extends Activity {
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
+  private static final SliderBinding[] SLIDERS = new SliderBinding[] {
+    new SliderBinding(R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f),
+    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f),
+    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 1f/25f),
+    new SliderBinding(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f),
+    new SliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.2f", 1f/50f),
+    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f),
+    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f),
+  };
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -53,36 +68,36 @@ public class FlowFieldActivity extends Activity {
     generateButton.setOnClickListener(v -> flowFieldGenerate());
     Button setLivepaperButton = findViewById(R.id.setLivepaper);
     setLivepaperButton.setOnClickListener(v -> app.setLivepaper(this));
-    TextView particleCountLabel = findViewById(R.id.particleCountLabel);
-    TextView speedLabel = findViewById(R.id.speedLabel);
 
-    // SeekBars
-    SeekBar speedSeek = findViewById(R.id.speedSeek);
-    SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
-    particleCountSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    // BG Color Spinner
+    Spinner spinner = findViewById(R.id.bgColorSpinner);
+    LinearLayout customLayout = findViewById(R.id.bgCustomColorLayout);
+
+    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
         @Override
-        public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-            particleCountLabel.setText("Particle count: " + progress);
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            String choice = parent.getItemAtPosition(pos).toString();
+            customLayout.setVisibility(choice.equals("Custom") ? View.VISIBLE : View.GONE);
         }
-        @Override public void onStartTrackingTouch(SeekBar seekbar) {}
-        @Override public void onStopTrackingTouch(SeekBar seekbar) {}
+        @Override public void onNothingSelected(AdapterView<?> parent) {}
     });
-    speedSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
-            speedLabel.setText("Particle speed: " + (progress / 100f));
-        }
-        @Override public void onStartTrackingTouch(SeekBar seekbar) {}
-        @Override public void onStopTrackingTouch(SeekBar seekbar) {}
-    });
-    speedSeek.incrementProgressBy(10);
-    particleCountSeek.incrementProgressBy(50);
 
     // update stuff with last used config
     FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
     FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
-    speedSeek.setProgress((int)(config.speed * 100));
-    particleCountSeek.setProgress(config.particleCount);
+    findViewById(R.id.speedSeek).setProgress((int)(config.speed * 100));
+    findViewById(R.id.particleCountSeek).setProgress(config.particleCount);
+    findViewById(R.id.angleRangeSeek).setProgress(config.angleRange);
+    findViewById(R.id.alphaSeek).setProgress(config.alpha);
+    findViewById(R.id.strokeWidthSeek).setProgress(config.strokeWidth);
+    findViewById(R.id.stepsSeek).setProgress(config.steps);
+    findViewById(R.id.noiseScaleSeek).setProgress(config.noiseScale);
+
+    // SeekBars
+    // (genius move: binding here auto-changes the labels. hopefully.)
+    for (SliderBinding s : SLIDERS) {
+      s.bind(this);
+    }
   }
 
   private void flowFieldGenerate() {
@@ -98,6 +113,11 @@ public class FlowFieldActivity extends Activity {
     // variables
     SeekBar particleCountSeek = findViewById(R.id.particleCountSeek);
     SeekBar speedSeek = findViewById(R.id.speedSeek);
+    SeekBar angleRangeSeek = findViewById(R.id.angleRangeSeek);
+    SeekBar stepsSeek = findViewById(R.id.stepsSeek);
+    SeekBar alphaSeek = findViewById(R.id.alphaSeek);
+    SeekBar strokeWidthSeek = findViewById(R.id.strokeWidthSeek);
+    SeekBar noiseScaleSeek = findViewById(R.id.noiseScaleSeek);
     int width = getResources().getDisplayMetrics().widthPixels;
     int height = getResources().getDisplayMetrics().heightPixels;
     FlowFieldGenerator generator = new FlowFieldGenerator();
@@ -107,6 +127,11 @@ public class FlowFieldActivity extends Activity {
     config.defaultConfig();
     config.particleCount = Math.max(500, particleCountSeek.getProgress());
     config.speed = speedSeek.getProgress() / 100f;
+    config.angleRange = angleRangeSeek.getProgress();
+    config.noiseScale = noiseScaleSeek.getProgress();
+    config.steps = stepsSeek.getProgress();
+    config.alpha = alphaSeek.getProgress();
+    config.strokeWidth = strokeWidthSeek.getProgress() / 100f;
     config.seed = System.currentTimeMillis();
     FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);
     FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);
