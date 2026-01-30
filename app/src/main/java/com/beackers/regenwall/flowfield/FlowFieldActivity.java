@@ -43,13 +43,13 @@ public class FlowFieldActivity extends Activity {
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
   private static final SliderBinding[] SLIDERS = new SliderBinding[] {
-    new SliderBinding(R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f),
-    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f),
-    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 1f/25f),
-    new SliderBinding(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f),
-    new SliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.2f", 1f/50f),
-    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f),
-    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f),
+    new SliderBinding(R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f, c -> c.speed, (c,v) -> c.speed = v),
+    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f, c -> c.particleCount, (c,v) -> c.particleCount = v),
+    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 1f/25f, c -> c.angleRange, (c,v) -> c.angleRange = v),
+    new SliderBinding(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f, c -> c.strokeWidth, (c,v) -> c.strokeWidth = v),
+    new SliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.2f", 1f/50f, c -> c.noiseScale, (c,v) -> c.noiseScale = v),
+    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f, c -> c.steps, (c,v) -> c.steps = v),
+    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f, c -> c.alpha, (c,v) -> c.alpha = v),
   };
 
   @Override
@@ -85,18 +85,12 @@ public class FlowFieldActivity extends Activity {
     // update stuff with last used config
     FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
     FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
-    findViewById(R.id.speedSeek).setProgress((int)(config.speed * 100));
-    findViewById(R.id.particleCountSeek).setProgress(config.particleCount);
-    findViewById(R.id.angleRangeSeek).setProgress(config.angleRange);
-    findViewById(R.id.alphaSeek).setProgress(config.alpha);
-    findViewById(R.id.strokeWidthSeek).setProgress(config.strokeWidth);
-    findViewById(R.id.stepsSeek).setProgress(config.steps);
-    findViewById(R.id.noiseScaleSeek).setProgress(config.noiseScale);
 
     // SeekBars
     // (genius move: binding here auto-changes the labels. hopefully.)
     for (SliderBinding s : SLIDERS) {
       s.bind(this);
+      s.setProgress(this, config);
     }
   }
 

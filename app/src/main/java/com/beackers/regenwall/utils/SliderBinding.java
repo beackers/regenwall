@@ -9,12 +9,16 @@ public class SliderBinding {
   public final int labelId;
   public final String format;
   public final float scale;
+  public final ConfigGetter getter;
+  public final ConfigSetter setter;
 
-  public SliderBinding(int seekId, int labelId, String format, float scale) {
+  public SliderBinding(int seekId, int labelId, String format, float scale, ConfigGetter getter, ConfigSetter setter) {
     this.seekId = seekId;
     this.labelId = labelId;
     this.format = format;
     this.scale = scale;
+    this.getter = getter;
+    this.setter = setter;
   }
 
   public void bind(Activity activity) {
@@ -29,5 +33,11 @@ public class SliderBinding {
       @Override public void onStartTrackingTouch(SeekBar s) {}
       @Override public void onStopTrackingTouch(SeekBar s) {}
     });
+  }
+
+  public void setProgress(Activity a, FlowFieldConfig config) {
+    SeekBar seek = (SeekBar)a.findViewById(seekId);
+    float value = this.getter.get(config);
+    seek.setProgress((int)(value / this.scale));
   }
 }
