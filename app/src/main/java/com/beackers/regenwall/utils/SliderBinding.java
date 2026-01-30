@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.beackers.regenwall.flowfield.FlowFieldConfig;
+import com.beackers.regenwall.ArtConfig;
 
 public class SliderBinding {
   public final int seekId;
@@ -37,9 +37,15 @@ public class SliderBinding {
     });
   }
 
-  public void setProgress(Activity a, FlowFieldConfig config) {
+  public void setProgressFromConfig(Activity a, ArtConfig config) {
     SeekBar seek = (SeekBar)a.findViewById(seekId);
     float value = this.getter.get(config);
-    seek.setProgress((int)(value * this.scale));
+    seek.setProgress((int)(value / this.scale));
+  }
+
+  public void applyToConfig(Activity a, ArtConfig config) {
+    SeekBar seek = (SeekBar)a.findViewById(this.seekId);
+    var v = seek.getProgress() * this.scale;
+    this.setter.set(config, v);
   }
 }

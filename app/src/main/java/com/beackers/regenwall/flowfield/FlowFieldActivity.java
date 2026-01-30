@@ -48,11 +48,11 @@ public class FlowFieldActivity extends Activity {
       c -> c.speed,
       (c,v) -> c.speed = v
     ),
-    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1,
+    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f,
       c -> c.particleCount,
       (c,v) -> c.particleCount = (int)v
     ),
-    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 1f/25f,
+    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 0.05f,
       c -> c.angleRange,
       (c,v) -> c.angleRange = v
     ),
@@ -60,15 +60,15 @@ public class FlowFieldActivity extends Activity {
       c -> c.strokeWidth,
       (c,v) -> c.strokeWidth = v
     ),
-    new SliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.2f", 1f/50f,
+    new LogSliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.5f", 0.0001f, 0.1f,
       c -> c.noiseScale,
       (c,v) -> c.noiseScale = v
     ),
-    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1,
+    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f,
       c -> c.steps,
       (c,v) -> c.steps = (int)v
     ),
-    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1,
+    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f,
       c -> c.alpha,
       (c,v) -> c.alpha = (int)v
     )
@@ -104,15 +104,14 @@ public class FlowFieldActivity extends Activity {
         @Override public void onNothingSelected(AdapterView<?> parent) {}
     });
 
-    // update stuff with last used config
+    // get datastore and convert to config
     FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
     FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
 
-    // SeekBars
-    // (genius move: binding here auto-changes the labels. hopefully.)
+    // set progress according to config values
     for (SliderBinding s : SLIDERS) {
       s.bind(this);
-      s.setProgress(this, config);
+      s.setProgressFromConfig(this, config);
     }
   }
 
@@ -135,7 +134,7 @@ public class FlowFieldActivity extends Activity {
     // save current config
     config.defaultConfig();
     for (SliderBinding s : SLIDERS) {
-      s.setProgress(this, config);
+      s.applyToConfig(this, config);
     }
     config.seed = System.currentTimeMillis();
     FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);

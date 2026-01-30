@@ -94,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:min="0"
-                android:max="50" />
+                android:max="20" />
 
             <TextView
                 android:id="@+id/alphaLabel"
@@ -153,8 +153,7 @@
                 android:id="@+id/noiseScaleSeek"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:min="1"
-                android:max="100" />
+                android:max="200" />
             
             <Spinner
               android:id="@+id/bgColorSpinner"
