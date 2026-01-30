@@ -127,6 +127,8 @@ public class FlowFieldActivity extends Activity {
     progressBar.setVisibility(View.VISIBLE);
 
     // variables
+    int width = getResources().getDisplayMetrics().widthPixels;
+    int height = getResources().getDisplayMetrics().heightPixels;
     FlowFieldGenerator generator = new FlowFieldGenerator();
     FlowFieldConfig config = new FlowFieldConfig();
 
