@@ -44,12 +44,12 @@ public class FlowFieldActivity extends Activity {
 
   private static final SliderBinding[] SLIDERS = new SliderBinding[] {
     new SliderBinding(R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f, c -> c.speed, (c,v) -> c.speed = v),
-    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1, c -> c.particleCount, (c,v) -> c.particleCount = v),
+    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1, c -> c.particleCount, (c,v) -> c.particleCount = (int)v),
     new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 1f/25f, c -> c.angleRange, (c,v) -> c.angleRange = v),
     new SliderBinding(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f, c -> c.strokeWidth, (c,v) -> c.strokeWidth = v),
     new SliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.2f", 1f/50f, c -> c.noiseScale, (c,v) -> c.noiseScale = v),
-    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1, c -> c.steps, (c,v) -> c.steps = v),
-    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1, c -> c.alpha, (c,v) -> c.alpha = v),
+    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1, c -> c.steps, (c,v) -> c.steps = (int)v),
+    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1, c -> c.alpha, (c,v) -> c.alpha = (int)v),
   };
 
   @Override
