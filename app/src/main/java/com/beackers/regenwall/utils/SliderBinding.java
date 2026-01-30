@@ -40,6 +40,6 @@ public class SliderBinding {
   public void setProgress(Activity a, FlowFieldConfig config) {
     SeekBar seek = (SeekBar)a.findViewById(seekId);
     float value = this.getter.get(config);
-    seek.setProgress((int)(value / this.scale));
+    seek.setProgress((int)(value * this.scale));
   }
 }
