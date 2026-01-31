@@ -43,7 +43,7 @@ public class FlowFieldActivity extends Activity {
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-  private static final SliderBinding<FlowFieldConfig>[] SLIDERS = new SliderBinding[] {
+  private static final List<SliderBinding<FlowFieldConfig>> SLIDERS = List.of(
     new SliderBinding<>(
       R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f,
       c -> c.speed,
@@ -73,7 +73,7 @@ public class FlowFieldActivity extends Activity {
       c -> c.alpha,
       (c,v) -> c.alpha = (int)v
     )
-  };
+  );
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
