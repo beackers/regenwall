@@ -37,38 +37,39 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.beackers.regenwall.utils.SliderBinding;
+import com.beackers.regenwall.utils.LogSliderBinding;
 
 public class FlowFieldActivity extends Activity {
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-  private static final SliderBinding[] SLIDERS = new SliderBinding[] {
-    new SliderBinding(
+  private static final SliderBinding<FlowFieldConfig>[] SLIDERS = new SliderBinding[] {
+    new SliderBinding<>(
       R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f,
       c -> c.speed,
       (c,v) -> c.speed = v
     ),
-    new SliderBinding(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f,
+    new SliderBinding<>(R.id.particleCountSeek, R.id.particleCountLabel, "Particles: %.0f", 1f,
       c -> c.particleCount,
       (c,v) -> c.particleCount = (int)v
     ),
-    new SliderBinding(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 0.05f,
+    new SliderBinding<>(R.id.angleRangeSeek, R.id.angleRangeLabel, "Angle Range: %.2f", 0.05f,
       c -> c.angleRange,
       (c,v) -> c.angleRange = v
     ),
-    new SliderBinding(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f,
+    new SliderBinding<>(R.id.strokeWidthSeek, R.id.strokeWidthLabel, "Width: %.2f", 0.01f,
       c -> c.strokeWidth,
       (c,v) -> c.strokeWidth = v
     ),
-    new LogSliderBinding(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.5f", 0.0001f, 0.1f,
+    new LogSliderBinding<>(R.id.noiseScaleSeek, R.id.noiseScaleLabel, "Noise Scale: %.5f", 0.0001f, 0.1f,
       c -> c.noiseScale,
       (c,v) -> c.noiseScale = v
     ),
-    new SliderBinding(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f,
+    new SliderBinding<>(R.id.stepsSeek, R.id.stepsLabel, "Steps: %.0f", 1f,
       c -> c.steps,
       (c,v) -> c.steps = (int)v
     ),
-    new SliderBinding(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f,
+    new SliderBinding<>(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f,
       c -> c.alpha,
       (c,v) -> c.alpha = (int)v
     )

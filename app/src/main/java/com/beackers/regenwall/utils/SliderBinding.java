@@ -6,21 +6,21 @@ import android.widget.TextView;
 
 import com.beackers.regenwall.ArtConfig;
 
-public class SliderBinding {
+public class SliderBinding<T> {
 
-  public interface ConfigGetter {
-    float get(ArtConfig C);
+  public interface Getter<T> {
+    float get(T c);
   }
-  public interface ConfigSetter {
-    void set(ArtConfig c, float v);
+  public interface Setter<T> {
+    void set(T c, float v);
   }
 
   public final int seekId;
   public final int labelId;
   public final String format;
   public final float scale;
-  public final ConfigGetter getter;
-  public final ConfigSetter setter;
+  public final Getter<T> getter;
+  public final Setter<T> setter;
 
   public SliderBinding(int seekId, int labelId, String format, float scale, ConfigGetter getter, ConfigSetter setter) {
     this.seekId = seekId;
@@ -45,13 +45,13 @@ public class SliderBinding {
     });
   }
 
-  public void setProgressFromConfig(Activity a, ArtConfig config) {
+  public void setProgressFromConfig(Activity a, T config) {
     SeekBar seek = (SeekBar)a.findViewById(seekId);
     float value = this.getter.get(config);
     seek.setProgress((int)(value / this.scale));
   }
 
-  public void applyToConfig(Activity a, ArtConfig config) {
+  public void applyToConfig(Activity a, T config) {
     SeekBar seek = (SeekBar)a.findViewById(this.seekId);
     var v = seek.getProgress() * this.scale;
     this.setter.set(config, v);

@@ -6,13 +6,6 @@ import android.widget.TextView;
 import com.beackers.regenwall.ArtConfig;
 
 public class LogSliderBinding extends SliderBinding {
-  public interface ConfigGetter {
-    float get(ArtConfig C);
-  }
-  public interface ConfigSetter {
-    void set(ArtConfig c, float v);
-  }
-
   private final float min;
   private final float max;
 
