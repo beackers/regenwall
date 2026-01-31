@@ -5,12 +5,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.beackers.regenwall.ArtConfig;
 
-public class LogSliderBinding extends SliderBinding {
+public class LogSliderBinding<T> extends SliderBinding<T> {
   private final float min;
   private final float max;
 
   public LogSliderBinding(int seekId, int labelId, String format, float min, float max,
-    ConfigGetter getter, ConfigSetter setter
+    Getter<T> getter, Setter<T> setter
     ) {
     super(seekId, labelId, format, 1f, getter, setter);
     this.min = min;
@@ -48,14 +48,14 @@ public class LogSliderBinding extends SliderBinding {
   }
 
   @Override
-  public void setProgressFromConfig(Activity a, ArtConfig config) {
+  public void setProgressFromConfig(Activity a, T config) {
     SeekBar seek = a.findViewById(seekId);
     float v = getter.get(config);
     seek.setProgress(valueToSlider(v, seek.getMax()));
   }
 
   @Override
-  public void applyToConfig(Activity a, ArtConfig config) {
+  public void applyToConfig(Activity a, T config) {
     SeekBar seek = a.findViewById(seekId);
     float v = sliderToValue(seek.getProgress(), seek.getMax());
     setter.set(config, v);

@@ -22,7 +22,7 @@ public class SliderBinding<T> {
   public final Getter<T> getter;
   public final Setter<T> setter;
 
-  public SliderBinding(int seekId, int labelId, String format, float scale, ConfigGetter getter, ConfigSetter setter) {
+  public SliderBinding(int seekId, int labelId, String format, float scale, Getter<T> getter, Setter<T> setter) {
     this.seekId = seekId;
     this.labelId = labelId;
     this.format = format;
