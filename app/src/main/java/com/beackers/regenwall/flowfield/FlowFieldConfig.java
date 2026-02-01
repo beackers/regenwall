@@ -14,8 +14,8 @@ public class FlowFieldConfig extends ArtConfig {
     public int[] palette;
     public float noiseScale;
     public int bgHue;
-    public int bgSat;
-    public int bgVal;
+    public float bgSat;
+    public float bgVal;
     public String bgColorMode;
 
     @Override
