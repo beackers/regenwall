@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.beackers.regenwall.ArtConfig;
-
-public class SliderBinding<T> {
+public class SliderBinding<T> implements ConfigBinding<T> {
 
   public interface Getter<T> {
     float get(T c);

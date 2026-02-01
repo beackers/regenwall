@@ -8,6 +8,7 @@ import com.beackers.regenwall.datastore.FlowFieldConfigStoreKt;
 import androidx.datastore.core.DataStore;
 import com.beackers.regenwall.RegenwallApp;
 import com.beackers.regenwall.PreviewActivity;
+import com.beackers.regenwall.BackgroundPresets;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +32,7 @@ import android.widget.AdapterView;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.List;
+import java.util.Map;
 import android.util.Log;
 
 import java.io.File;
@@ -39,12 +41,13 @@ import java.io.IOException;
 
 import com.beackers.regenwall.utils.SliderBinding;
 import com.beackers.regenwall.utils.LogSliderBinding;
+import com.beackers.regenwall.utils.HSVSliderGroup;
 
 public class FlowFieldActivity extends Activity {
   private final ExecutorService executor = Executors.newSingleThreadExecutor();
   private final Handler mainHandler = new Handler(Looper.getMainLooper());
-
-  private static final List<SliderBinding<FlowFieldConfig>> SLIDERS = List.of(
+  private final String[] BG_PRESETS = BackgroundPresets.flowFieldPresets().keySet().toArray(new String[0]);
+  private final List<ConfigBinding<FlowFieldConfig>> SLIDERS = List.of(
     new SliderBinding<FlowFieldConfig>(
       R.id.speedSeek, R.id.speedLabel, "Speed: %.2f", 0.01f,
       c -> c.speed,
@@ -73,7 +76,21 @@ public class FlowFieldActivity extends Activity {
     new SliderBinding<FlowFieldConfig>(R.id.alphaSeek, R.id.alphaLabel, "Alpha: %.0f", 1f,
       c -> c.alpha,
       (c,v) -> c.alpha = (int)v
-    )
+    ),
+    new HSVSliderGroup<FlowFieldConfig>(
+        new SliderBinding(R.id.bgHueSeek, R.id.bgHueLabel, "Hue: %.0f", 1f,
+          c -> c.bgHue,
+          (c,v) -> c.bgHue = (int)v
+          ),
+        new SliderBinding(R.id.bgSatSeek, R.id.bgSatLabel, "Saturation: %.2f", .01f,
+          c -> c.bgSat,
+          (c,v) -> c.bgSat = v
+          ),
+        new SliderBinding(R.id.bgValSeek, R.id.bgValLabel, "Value: %.2f", .01f,
+          c -> c.bgVal,
+          (c,v) -> c.bgVal = v
+          )
+        )
   );
 
   @Override
@@ -93,7 +110,10 @@ public class FlowFieldActivity extends Activity {
     Button setLivepaperButton = findViewById(R.id.setLivepaper);
     setLivepaperButton.setOnClickListener(v -> app.setLivepaper(this));
 
-    // BG Color Spinner
+    // get datastore and convert to config
+    FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
+    FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+
     Spinner spinner = findViewById(R.id.bgColorSpinner);
     LinearLayout customLayout = findViewById(R.id.bgCustomColorLayout);
 
@@ -105,16 +125,21 @@ public class FlowFieldActivity extends Activity {
         }
         @Override public void onNothingSelected(AdapterView<?> parent) {}
     });
-
-    // get datastore and convert to config
-    FlowFieldConfigProto proto = FlowFieldConfigStoreKt.readFlowFieldConfig(store);
-    FlowFieldConfig config = FlowFieldConfigMapper.fromProto(proto);
+    ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        this,
+        android.R.layout.simple_spinner_item,
+        BG_PRESETS
+      );
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    spinner.setAdapter(adapter);
 
     // set progress according to config values
-    for (SliderBinding s : SLIDERS) {
+    for (ConfigBinding<FlowFieldConfig> s : SLIDERS) {
       s.bind(this);
       s.setProgressFromConfig(this, config);
     }
+    // set spinner
+    spinner.setSelection(adapter.getPosition(config.bgColorMode));
   }
 
   private void flowFieldGenerate() {
@@ -133,11 +158,16 @@ public class FlowFieldActivity extends Activity {
     FlowFieldGenerator generator = new FlowFieldGenerator();
     FlowFieldConfig config = new FlowFieldConfig();
 
+    // bg
+    Spinner spinner = findViewById(R.id.bgColorSpinner);
+    String choice = spinner.getSelectedItem().toString();
+
     // save current config
     config.defaultConfig();
-    for (SliderBinding s : SLIDERS) {
+    for (ConfigBinding<FlowFieldConfig> s : SLIDERS) {
       s.applyToConfig(this, config);
     }
+    config.bgColorMode = choice;
     config.seed = System.currentTimeMillis();
     FlowFieldConfigProto proto = FlowFieldConfigMapper.toProto(config);
     FlowFieldConfigStoreKt.writeFlowFieldConfig(store, proto);

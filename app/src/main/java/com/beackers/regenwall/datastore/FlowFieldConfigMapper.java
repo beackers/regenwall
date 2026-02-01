@@ -18,8 +18,11 @@ public final class FlowFieldConfigMapper {
             .setAngleRange(cfg.angleRange)
             .setAlpha(cfg.alpha)
             .setStrokeWidth(cfg.strokeWidth)
-            .setBackgroundColor(cfg.backgroundColor)
             .setNoiseScale(cfg.noiseScale)
+            .setBgHue(cfg.bgHue)
+            .setBgSat(cfg.bgSat)
+            .setBgVal(cfg.bgVal)
+            .setBgColorMode(cfg.bgColorMode)
             .addAllPalette(
                     Arrays.stream(cfg.palette)
                     .boxed()
@@ -38,7 +41,10 @@ public final class FlowFieldConfigMapper {
         cfg.angleRange = proto.getAngleRange();
         cfg.alpha = proto.getAlpha();
         cfg.strokeWidth = proto.getStrokeWidth();
-        cfg.backgroundColor = proto.getBackgroundColor();
+        cfg.bgHue = proto.getBgHue();
+        cfg.bgSat = proto.getBgSat();
+        cfg.bgColorMode = proto.getBgColorMode();
+        cfg.bgVal = proto.getBgVal();
         cfg.noiseScale = proto.getNoiseScale();
         cfg.palette = proto.getPaletteList()
             .stream()
