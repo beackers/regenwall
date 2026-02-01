@@ -15,8 +15,8 @@ message FlowFieldConfigProto {
   float noiseScale = 9;
   repeated int32 palette = 10;
   int32 bgHue = 11;
-  int32 bgSat = 12;
-  int32 bgVal = 13;
+  float bgSat = 12;
+  float bgVal = 13;
   string bgColorMode = 14;
 }
 
