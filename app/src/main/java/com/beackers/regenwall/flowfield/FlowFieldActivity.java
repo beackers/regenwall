@@ -21,8 +21,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Bitmap;
-
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -92,6 +91,9 @@ public class FlowFieldActivity extends Activity {
           c -> c.bgVal,
           (c,v) -> c.bgVal = v
           )
+        ,
+        (activity, hue, saturation, value) ->
+            updateBgColorPreview(activity, hue, saturation, value)
         )
   );
 
@@ -142,6 +144,15 @@ public class FlowFieldActivity extends Activity {
     }
     // set spinner
     spinner.setSelection(adapter.getPosition(config.bgColorMode));
+  }
+
+  private static void updateBgColorPreview(Activity activity, float hue, float saturation, float value) {
+    LinearLayout preview = activity.findViewById(R.id.bgColorPreview);
+    if (preview == null) {
+      return;
+    }
+    float[] hsv = new float[] { hue, saturation, value };
+    preview.setBackgroundColor(Color.HSVToColor(hsv));
   }
 
   private void flowFieldGenerate() {
