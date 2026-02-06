@@ -41,6 +41,9 @@ public class LogSliderBinding<T> extends SliderBinding<T> {
       public void onProgressChanged(SeekBar s, int p, boolean fromUser) {
         float v = sliderToValue(p, s.getMax());
         label.setText(String.format(format, v));
+        if (progressCallback != null) {
+          progressCallback.onProgressChanged(s, p, fromUser);
+        }
       }
       @Override public void onStartTrackingTouch(SeekBar s) {}
       @Override public void onStopTrackingTouch(SeekBar s) {}

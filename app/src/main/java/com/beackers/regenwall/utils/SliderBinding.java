@@ -12,6 +12,9 @@ public class SliderBinding<T> implements ConfigBinding<T> {
   public interface Setter<T> {
     void set(T c, float v);
   }
+  public interface ProgressCallback {
+    void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser);
+  }
 
   public final int seekId;
   public final int labelId;
@@ -19,6 +22,7 @@ public class SliderBinding<T> implements ConfigBinding<T> {
   public final float scale;
   public final Getter<T> getter;
   public final Setter<T> setter;
+  protected ProgressCallback progressCallback;
 
   public SliderBinding(int seekId, int labelId, String format, float scale, Getter<T> getter, Setter<T> setter) {
     this.seekId = seekId;
@@ -27,6 +31,29 @@ public class SliderBinding<T> implements ConfigBinding<T> {
     this.scale = scale;
     this.getter = getter;
     this.setter = setter;
+    this.progressCallback = null;
+  }
+
+  public SliderBinding(
+      int seekId,
+      int labelId,
+      String format,
+      float scale,
+      Getter<T> getter,
+      Setter<T> setter,
+      ProgressCallback progressCallback
+  ) {
+    this.seekId = seekId;
+    this.labelId = labelId;
+    this.format = format;
+    this.scale = scale;
+    this.getter = getter;
+    this.setter = setter;
+    this.progressCallback = progressCallback;
+  }
+
+  public void setProgressCallback(ProgressCallback progressCallback) {
+    this.progressCallback = progressCallback;
   }
 
   public void bind(Activity activity) {
@@ -37,6 +64,9 @@ public class SliderBinding<T> implements ConfigBinding<T> {
       @Override
       public void onProgressChanged(SeekBar s, int p, boolean fromUser) {
         label.setText(String.format(format, p * scale));
+        if (progressCallback != null) {
+          progressCallback.onProgressChanged(s, p, fromUser);
+        }
       }
       @Override public void onStartTrackingTouch(SeekBar s) {}
       @Override public void onStopTrackingTouch(SeekBar s) {}
