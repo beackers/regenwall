@@ -48,7 +48,7 @@ public class CrashViewerActivity extends Activity {
         ClipData clip =
             ClipData.newPlainText("stack trace", tv.getText());
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_SHORT).show();
     }
 
     private void delete(File file) {

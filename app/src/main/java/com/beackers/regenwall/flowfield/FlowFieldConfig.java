@@ -11,9 +11,12 @@ public class FlowFieldConfig extends ArtConfig {
     public float angleRange;
     public int alpha;
     public float strokeWidth;
-    public int backgroundColor;
     public int[] palette;
     public float noiseScale;
+    public int bgHue;
+    public float bgSat;
+    public float bgVal;
+    public String bgColorMode;
 
     @Override
     public void defaultConfig() {
@@ -24,7 +27,10 @@ public class FlowFieldConfig extends ArtConfig {
         this.angleRange = 1.0f;
         this.alpha = 20;
         this.strokeWidth = 1f;
-        this.backgroundColor = Color.BLACK;
+        this.bgHue = 0;
+        this.bgSat = 100;
+        this.bgVal = 100;
+        this.bgColorMode = "Black";
         this.palette = new int[]{
                 Color.WHITE,
                 Color.CYAN,

@@ -7,10 +7,14 @@ import android.graphics.Color;
 
 import java.util.Random;
 import java.util.Arrays;
+import java.util.Map;
 import com.beackers.regenwall.ArtGenerator;
+import com.beackers.regenwall.BackgroundPresets;
 import com.beackers.regenwall.ProgressListener;
 
 public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
+  private final Map<String, float[]> BG_PRESETS = BackgroundPresets.flowFieldPresets();
+
     @Override
     public Bitmap generate(
             int width,
@@ -22,7 +26,17 @@ public class FlowFieldGenerator implements ArtGenerator<FlowFieldConfig> {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        canvas.drawColor(config.backgroundColor);
+        float[] bghsv;
+        if (config.bgColorMode.equals("Custom")) {
+          bghsv = new float[] {
+            config.bgHue,
+            config.bgSat,
+            config.bgVal
+          };
+        } else {
+          bghsv = BG_PRESETS.getOrDefault(config.bgColorMode, new float[]{ 0f, 0f, 0f });
+        }
+        canvas.drawColor(Color.HSVToColor(bghsv));
 
         Random rng = new Random(config.seed);
 

@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.beackers.regenwall"
         minSdk 29
-        targetSdk 31
+        targetSdk 33
         versionCode 6
         versionName "1.0"
     }
