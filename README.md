@@ -9,6 +9,8 @@ And the best part? It's FOSS (Free and Open-Source Software). Even better than f
 
 **Forget boring. Regen your wall.**
 
+![Generated picture](/pictures/regenwall-1769860182870.png)
+
 # v1 -- highlights
 * **Initial release!** Always a fun time.
 * Local Perlin Noise generator
