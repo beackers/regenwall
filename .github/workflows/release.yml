@@ -53,9 +53,9 @@ jobs:
           RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
           RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-
+      
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: regenwall-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: regenwall-release-apk
+          path: app/build/outputs/apk/release/app-release.apk
